@@ -6,18 +6,42 @@
          @keydown.window.f2.prevent="customerTs && customerTs.focus()"
          @keydown.window.f3.prevent="openConfirmation()"
          @keydown.window.f4.prevent="openCustomerModal()"
+         @keydown.window.f9.prevent="$refs.barcodeInput && $refs.barcodeInput.focus()"
     >
         <div class="flex flex-col lg:flex-row h-[calc(100vh-100px)] space-y-4 lg:space-y-0 lg:space-x-4 relative">
 
             <!-- Left Side: Transaction Details (70%) -->
             <div class="w-full lg:w-[70%] flex flex-col space-y-4 h-full">
-                <!-- Search Bar (TomSelect) -->
-                <div class="relative z-20 mb-2">
+                <!-- Search + optional barcode scan -->
+                <div class="relative z-20 mb-2 space-y-2">
                     <select
                         x-ref="productSelect"
-                        placeholder="Search Products (Name or SKU) [F1]..."
+                        placeholder="Search products (name, SKU or barcode) [F1]..."
                         autocomplete="off"
                     ></select>
+
+                    <div class="flex gap-2">
+                        <div class="relative flex-1">
+                            <input
+                                type="text"
+                                x-ref="barcodeInput"
+                                x-model="barcodeInput"
+                                @keydown.enter.prevent="scanBarcode()"
+                                placeholder="Scan barcode or SKU [F9] — optional"
+                                autocomplete="off"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm font-mono"
+                            >
+                        </div>
+                        <button
+                            type="button"
+                            @click="scanBarcode()"
+                            :disabled="isScanning || !barcodeInput"
+                            class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+                        >
+                            <span x-show="!isScanning">Add</span>
+                            <span x-show="isScanning">...</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Cart Table -->
@@ -40,7 +64,7 @@
                                     <tr :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'" class="hover:bg-indigo-50 transition-colors">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm font-medium text-gray-900" x-text="item.name"></div>
-                                            <div class="text-xs text-gray-500" x-text="item.sku"></div>
+                                            <div class="text-xs text-gray-500" x-text="item.barcode ? (item.sku + ' · ' + item.barcode) : item.sku"></div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500" x-text="formatCurrency(item.price)"></td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
@@ -84,7 +108,7 @@
                                             <div class="flex flex-col items-center justify-center">
                                                 <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                                                 <p class="text-base font-medium">Cart is empty</p>
-                                                <p class="text-sm text-gray-400">Search products above to start transaction</p>
+                                                <p class="text-sm text-gray-400">Search or scan a barcode to start</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -291,6 +315,8 @@
                     globalDiscount: 0,
                     saleStatus: 'completed',
                     isSubmitting: false,
+                    barcodeInput: '',
+                    isScanning: false,
 
                     // TomSelect Instances
                     productTs: null,
@@ -322,6 +348,43 @@
                         this.initCustomerSelect();
                     },
 
+                    async scanBarcode() {
+                        const code = (this.barcodeInput || '').trim();
+                        if (!code || this.isScanning) return;
+
+                        this.isScanning = true;
+                        try {
+                            const response = await fetch('{{ route("ajax.products.lookup") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({ code })
+                            });
+
+                            if (response.status === 404) {
+                                this.$dispatch('toast', { message: 'No product found for: ' + code, type: 'error' });
+                                return;
+                            }
+
+                            if (!response.ok) {
+                                this.$dispatch('toast', { message: 'Could not look up barcode.', type: 'error' });
+                                return;
+                            }
+
+                            const product = await response.json();
+                            this.addToCart(product);
+                            this.barcodeInput = '';
+                            this.$nextTick(() => this.$refs.barcodeInput && this.$refs.barcodeInput.focus());
+                        } catch (e) {
+                            this.$dispatch('toast', { message: 'Barcode lookup failed.', type: 'error' });
+                        } finally {
+                            this.isScanning = false;
+                        }
+                    },
+
                     initProductSelect() {
                         if (!this.$refs.productSelect) return;
 
@@ -333,7 +396,7 @@
                         this.productTs = new TomSelect(this.$refs.productSelect, {
                             valueField: 'id',
                             labelField: 'name',
-                            searchField: ['name', 'sku'],
+                            searchField: ['name', 'sku', 'barcode'],
                             closeAfterSelect: false,
                             openOnFocus: true,
                             preload: 'focus', // UX Improvement
@@ -357,12 +420,15 @@
                             },
                             render: {
                                 option: (item, escape) => {
+                                    const codeLine = item.barcode
+                                        ? `${escape(item.sku)} · ${escape(item.barcode)}`
+                                        : escape(item.sku || '');
                                     return `
                                         <div class="py-2 px-3 border-b border-gray-100">
                                             <div class="flex justify-between items-center">
                                                 <div>
                                                     <div class="font-medium text-gray-900">${escape(item.name)}</div>
-                                                    <div class="text-xs text-gray-500">${escape(item.sku)}</div>
+                                                    <div class="text-xs text-gray-500">${codeLine}</div>
                                                 </div>
                                                 <div class="text-right">
                                                     <div class="font-bold text-indigo-600">${this.formatCurrency(item.selling_price)}</div>
@@ -495,6 +561,7 @@
                                     id: product.id,
                                     name: product.name,
                                     sku: product.sku,
+                                    barcode: product.barcode || null,
                                     price: product.selling_price,
                                     quantity: 1,
                                     max_stock: product.quantity,

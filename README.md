@@ -122,7 +122,7 @@ Follow these steps to set up the project locally without Docker.
 #### Prerequisites
 - PHP 8.2 or higher
 - Composer
-- Node.js & NPM
+- Node.js & [pnpm](https://pnpm.io/installation)
 - MySQL Database
 
 #### Installation Steps
@@ -176,8 +176,8 @@ Follow these steps to set up the project locally without Docker.
 
 9. **Install node modules and compile assets:**
     ```bash
-    npm install
-    npm run build
+    pnpm install
+    pnpm run build
     ```
 
 10. **Start the Laravel development server:**

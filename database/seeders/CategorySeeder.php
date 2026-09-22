@@ -12,28 +12,36 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Material Dasar',
-                'description' => 'Bahan bangunan utama seperti pasir, semen, batu, bata, hebel, dan besi beton.'
+                'name' => 'Camisetas y Polos',
+                'description' => 'Camisetas básicas, oversize, polos y tops casuales.',
             ],
             [
-                'name' => 'Kayu & Atap',
-                'description' => 'Material kayu, triplek, kaso, serta penutup atap seperti genteng, asbes, seng, dan terpal.'
+                'name' => 'Camisas',
+                'description' => 'Camisas formales, casuales y de vestir para hombre y mujer.',
             ],
             [
-                'name' => 'Cat & Finishing',
-                'description' => 'Segala jenis cat (tembok/kayu/besi), thinner, pelapis anti bocor (no drop), dan lem.'
+                'name' => 'Pantalones y Jeans',
+                'description' => 'Jeans, joggers, pantalones de vestir y cargo.',
             ],
             [
-                'name' => 'Lantai & Dinding',
-                'description' => 'Penutup lantai dan dinding termasuk keramik, granit, plint, dan lis profil (kuku macan).'
+                'name' => 'Vestidos y Faldas',
+                'description' => 'Vestidos casuales, de fiesta, faldas y enterizos.',
             ],
             [
-                'name' => 'Pipa & Listrik',
-                'description' => 'Instalasi air (pipa PVC, kran, toren) dan instalasi listrik (kabel, lampu, saklar).'
+                'name' => 'Chaquetas y Buzos',
+                'description' => 'Chaquetas, buzos, hoodies, blazers y abrigos ligeros.',
             ],
             [
-                'name' => 'Paku & Alat',
-                'description' => 'Barang kecil/receh seperti paku, baut, sekrup, engsel, gembok, dan peralatan tukang.'
+                'name' => 'Ropa Deportiva',
+                'description' => 'Leggins, shorts deportivos, tops y conjuntos fitness.',
+            ],
+            [
+                'name' => 'Accesorios',
+                'description' => 'Cinturones, gorras, bufandas, bolsos y complementos.',
+            ],
+            [
+                'name' => 'Calzado',
+                'description' => 'Tenis, zapatos formales, sandalias y botines.',
             ],
         ];
 

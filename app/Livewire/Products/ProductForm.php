@@ -19,6 +19,7 @@ class ProductForm extends Component
 
     // Form Fields
     public ?string $sku = null;
+    public ?string $barcode = null;
     public string $name = '';
     public ?int $category_id = null;
     public ?int $unit_id = null;
@@ -47,7 +48,7 @@ class ProductForm extends Component
     #[On('create-product')]
     public function create(): void
     {
-        $this->reset(['sku', 'name', 'category_id', 'unit_id', 'purchase_price', 'selling_price', 'quantity', 'min_stock', 'description', 'notes', 'product', 'isEditing', 'categoryName', 'unitName']);
+        $this->reset(['sku', 'barcode', 'name', 'category_id', 'unit_id', 'purchase_price', 'selling_price', 'quantity', 'min_stock', 'description', 'notes', 'product', 'isEditing', 'categoryName', 'unitName']);
         $this->is_active = true;
 
         $this->dispatch('open-modal', name: 'product-form-modal');
@@ -58,6 +59,7 @@ class ProductForm extends Component
     {
         $this->product = $product;
         $this->sku = $product->sku;
+        $this->barcode = $product->barcode;
         $this->name = $product->name;
         $this->category_id = $product->category_id;
         $this->unit_id = $product->unit_id;
@@ -88,6 +90,12 @@ class ProductForm extends Component
                 'max:50',
                 Rule::unique('products', 'sku')->ignore($this->product?->id)
             ],
+            'barcode' => [
+                'nullable',
+                'string',
+                'max:64',
+                Rule::unique('products', 'barcode')->ignore($this->product?->id)
+            ],
             'category_id' => ['required', 'exists:categories,id'],
             'unit_id' => ['required', 'exists:units,id'],
             'purchase_price' => ['required', 'numeric', 'min:0'],
@@ -103,6 +111,7 @@ class ProductForm extends Component
     public function save(ProductService $service): void
     {
         $validated = $this->validate();
+        $validated['barcode'] = !empty($validated['barcode']) ? trim($validated['barcode']) : null;
 
         $data = ProductData::fromArray($validated);
 

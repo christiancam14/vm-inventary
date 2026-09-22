@@ -70,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =========================================================================
     Route::prefix('ajax')->name('ajax.')->group(function () {
         Route::post('products', [\App\Http\Controllers\Api\ProductController::class, 'search'])->name('products.search');
+        Route::post('products/lookup', [\App\Http\Controllers\Api\ProductController::class, 'lookup'])->name('products.lookup');
         Route::post('suppliers', [\App\Http\Controllers\Api\SupplierController::class, 'search'])->name('suppliers.search');
         Route::post('customers', [\App\Http\Controllers\Api\CustomerController::class, 'search'])->name('customers.search');
         Route::post('customers/store', [\App\Http\Controllers\Api\CustomerController::class, 'store'])->name('customers.store');

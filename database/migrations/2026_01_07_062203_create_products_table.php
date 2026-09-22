@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->restrictOnDelete();
             $table->foreignId('unit_id')->constrained()->restrictOnDelete();
             $table->string('sku', 50)->unique();
+            $table->string('barcode', 64)->nullable()->unique();
             $table->string('name', 150)->index();
             $table->bigInteger('purchase_price');
             $table->bigInteger('selling_price');

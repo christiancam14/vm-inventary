@@ -15,68 +15,68 @@ class FinanceCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            // Income
+            // Ingresos
             [
-                'name' => 'Penjualan Produk',
+                'name' => 'Ventas de ropa',
                 'type' => FinanceCategoryType::Income,
-                'description' => 'Pendapatan langsung dari penjualan produk toko.',
+                'description' => 'Ingresos por venta de prendas y accesorios en tienda.',
             ],
             [
-                'name' => 'Layanan Jasa',
+                'name' => 'Ventas online',
                 'type' => FinanceCategoryType::Income,
-                'description' => 'Pendapatan dari layanan jasa service atau konsultasi.',
+                'description' => 'Ingresos por pedidos a través de redes o e-commerce.',
             ],
             [
-                'name' => 'Investasi',
+                'name' => 'Servicios de arreglos',
                 'type' => FinanceCategoryType::Income,
-                'description' => 'Dividen atau bunga dari investasi modal.',
+                'description' => 'Ingresos por costura, dobladillos y ajustes.',
             ],
             [
-                'name' => 'Pendapatan Lain-lain',
+                'name' => 'Otros ingresos',
                 'type' => FinanceCategoryType::Income,
-                'description' => 'Pendapatan di luar operasional utama.',
+                'description' => 'Ingresos no operativos o extraordinarios.',
             ],
 
-            // Expenses
+            // Gastos
             [
-                'name' => 'Gaji Karyawan',
+                'name' => 'Nómina',
                 'type' => FinanceCategoryType::Expense,
-                'description' => 'Biaya gaji bulanan dan tunjangan karyawan.',
+                'description' => 'Salarios, prestaciones y pagos al personal.',
             ],
             [
-                'name' => 'Sewa Gedung',
+                'name' => 'Arriendo local',
                 'type' => FinanceCategoryType::Expense,
-                'description' => 'Biaya sewa toko atau gudang operasional.',
+                'description' => 'Canon de arriendo del local comercial.',
             ],
             [
-                'name' => 'Listrik & Air',
+                'name' => 'Servicios públicos',
                 'type' => FinanceCategoryType::Expense,
-                'description' => 'Tagihan utilitas bulanan.',
+                'description' => 'Energía, agua, gas e internet del local.',
             ],
             [
-                'name' => 'Internet & Telepon',
+                'name' => 'Marketing y publicidad',
                 'type' => FinanceCategoryType::Expense,
-                'description' => 'Biaya komunikasi dan koneksi internet.',
+                'description' => 'Anuncios en redes, volantes y campañas promocionales.',
             ],
             [
-                'name' => 'Pemasaran & Iklan',
+                'name' => 'Transporte y envíos',
                 'type' => FinanceCategoryType::Expense,
-                'description' => 'Biaya promosi, iklan sosial media, dan cetak.',
+                'description' => 'Domicilios, mensajería y logística de mercancía.',
             ],
             [
-                'name' => 'Perawatan & Perbaikan',
+                'name' => 'Compra de mercancía',
                 'type' => FinanceCategoryType::Expense,
-                'description' => 'Biaya maintenance aset dan peralatan.',
+                'description' => 'Compra de inventario a proveedores (costo de venta).',
             ],
             [
-                'name' => 'Transportasi & Logistik',
+                'name' => 'Mantenimiento',
                 'type' => FinanceCategoryType::Expense,
-                'description' => 'Biaya bensin, pengiriman, dan perjalanan dinas.',
+                'description' => 'Reparaciones del local, maniquíes y equipos.',
             ],
             [
-                'name' => 'Pembelian Stok',
+                'name' => 'Impuestos y trámites',
                 'type' => FinanceCategoryType::Expense,
-                'description' => 'Biaya pembelian barang dagangan (HPP).',
+                'description' => 'ICA, retefuente, renovación de cámara y similares.',
             ],
         ];
 

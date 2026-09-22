@@ -6,6 +6,9 @@
                 <div>
                     <h3 class="text-xl font-bold text-foreground tracking-tight">{{ $product->name }}</h3>
                     <p class="text-sm text-muted-foreground font-mono">{{ $product->sku }}</p>
+                    @if($product->barcode)
+                        <p class="text-xs text-muted-foreground font-mono mt-0.5">Barcode: {{ $product->barcode }}</p>
+                    @endif
                 </div>
                 <div>
                     @if($product->is_active)

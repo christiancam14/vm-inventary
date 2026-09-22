@@ -490,7 +490,7 @@
                         preload: 'focus',
                         valueField: 'value',
                         labelField: 'text',
-                        searchField: 'text',
+                        searchField: ['text', 'name', 'sku', 'barcode'],
                         closeAfterSelect: false,
                         openOnFocus: true,
                         load: function(query, callback) {
@@ -510,6 +510,14 @@
                             }).catch(() => {
                                 callback();
                             });
+                        },
+                        render: {
+                            option: function(item, escape) {
+                                const code = item.barcode
+                                    ? escape(item.sku) + ' · ' + escape(item.barcode)
+                                    : escape(item.sku || '');
+                                return '<div class="py-1"><div class="font-medium">' + escape(item.name || item.text) + '</div><div class="text-xs text-gray-500">' + code + '</div></div>';
+                            }
                         },
                         onItemAdd: function(value, item) {
                             let data = this.options[value];

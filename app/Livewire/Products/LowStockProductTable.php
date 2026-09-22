@@ -58,6 +58,7 @@ final class LowStockProductTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('id')
             ->add('sku')
+            ->add('barcode')
             ->add('name')
             ->add('name_formatted', function (Product $model) {
                 return $model->is_active ? $model->name : '(DISCONTINUE) ' . $model->name;
@@ -99,6 +100,9 @@ final class LowStockProductTable extends PowerGridComponent
                 ->visibleInExport(false),
 
             Column::make('SKU', 'sku')
+                ->searchable(),
+
+            Column::make('Barcode', 'barcode')
                 ->searchable(),
 
             Column::make('Name', 'name_formatted', 'name')

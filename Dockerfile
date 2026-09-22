@@ -20,14 +20,16 @@ WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable \
+    && corepack prepare pnpm@12.5.1 --activate \
+    && pnpm install --frozen-lockfile
 
 COPY vite.config.js postcss.config.js tailwind.config.js ./
 COPY resources ./resources
 COPY public ./public
 
-RUN npm run build
+RUN pnpm run build
 
 # Stage 2: Application runtime (PHP + Nginx) — Alpine avoids flaky Debian CDN mirrors
 FROM php:8.3-fpm-alpine

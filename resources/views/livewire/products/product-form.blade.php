@@ -35,13 +35,23 @@
                 <x-form-input
                     name="name"
                     label="Product Name"
-                    placeholder="e.g. Wireless Mouse"
+                    placeholder="e.g. Camiseta básica blanca - M"
                     type="text"
                     wire:model="name"
                     required
                     class="{{ !$isEditing ? 'col-span-2' : '' }}"
                 />
             </div>
+
+            <!-- Optional barcode -->
+            <x-form-input
+                name="barcode"
+                label="Barcode (optional)"
+                type="text"
+                wire:model="barcode"
+                placeholder="Scan or type EAN/UPC — leave empty if unused"
+            />
+            <p class="text-xs text-muted-foreground -mt-4">If set, you can scan this code in POS to add the product to the cart.</p>
 
             <!-- Row 2: Category & Unit -->
             <div class="flex flex-col sm:flex-row gap-6">
