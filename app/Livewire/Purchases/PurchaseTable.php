@@ -72,36 +72,36 @@ final class PurchaseTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')->hidden(),
+            Column::make(__('ID'), 'id')->hidden(),
 
-            Column::make('Invoice Number', 'invoice_number')
+            Column::make(__('Invoice Number'), 'invoice_number')
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Supplier', 'supplier_name', 'supplier_id')
+            Column::make(__('Supplier'), 'supplier_name', 'supplier_id')
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Purchase Date', 'purchase_date_formatted', 'purchase_date')
+            Column::make(__('Purchase Date'), 'purchase_date_formatted', 'purchase_date')
                 ->sortable(),
 
-            Column::make('Period', 'date_period')
+            Column::make(__('Period'), 'date_period')
                 ->hidden(),
 
-            Column::make('Total', 'total_formatted', 'total')
+            Column::make(__('Total'), 'total_formatted', 'total')
                 ->sortable()
                 ->headerAttribute('text-right')
                 ->bodyAttribute('text-right'),
 
-            Column::make('Status', 'status_badge', 'status')
+            Column::make(__('Status'), 'status_badge', 'status')
                 ->sortable()
                 ->headerAttribute('text-center')
                 ->bodyAttribute('text-center'),
 
-            Column::make('Created By', 'creator_name', 'created_by')
+            Column::make(__('Created By'), 'creator_name', 'created_by')
                 ->sortable(),
 
-            Column::action('Action'),
+            Column::action(__('Action')),
         ];
     }
 
@@ -138,12 +138,12 @@ final class PurchaseTable extends PowerGridComponent
 
             Filter::select('date_period')
                 ->dataSource([
-                    ['name' => 'Today', 'value' => 'today'],
-                    ['name' => 'Yesterday', 'value' => 'yesterday'],
-                    ['name' => 'This Week', 'value' => 'this_week'],
-                    ['name' => 'Last Week', 'value' => 'last_week'],
-                    ['name' => 'This Month', 'value' => 'this_month'],
-                    ['name' => 'Last Month', 'value' => 'last_month'],
+                    ['name' => __('Today'), 'value' => 'today'],
+                    ['name' => __('Yesterday'), 'value' => 'yesterday'],
+                    ['name' => __('This Week'), 'value' => 'this_week'],
+                    ['name' => __('Last Week'), 'value' => 'last_week'],
+                    ['name' => __('This Month'), 'value' => 'this_month'],
+                    ['name' => __('Last Month'), 'value' => 'last_month'],
                 ])
                 ->optionLabel('name')
                 ->optionValue('value')
@@ -220,11 +220,11 @@ final class PurchaseTable extends PowerGridComponent
         if ($purchase) {
             try {
                 $purchaseService->deletePurchase($purchase);
-                $this->dispatch('toast', message: 'Purchase deleted successfully.', type: 'success');
+                $this->dispatch('toast', message: __('Purchase deleted successfully.'), type: 'success');
             } catch (PurchaseException $e) {
                 $this->dispatch('toast', message: $e->getMessage(), type: 'error');
             } catch (\Exception $e) {
-                $this->dispatch('toast', message: 'An unexpected error occurred during deletion.', type: 'error');
+                $this->dispatch('toast', message: __('An unexpected error occurred during deletion.'), type: 'error');
             }
         }
     }

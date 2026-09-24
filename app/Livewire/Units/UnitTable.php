@@ -57,19 +57,19 @@ final class UnitTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
+            Column::make(__('ID'), 'id')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Name', 'name')
+            Column::make(__('Name'), 'name')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Symbol', 'symbol')
+            Column::make(__('Symbol'), 'symbol')
                 ->sortable()
                 ->searchable(),
 
-            Column::action('Action'),
+            Column::action(__('Action')),
         ];
     }
 
@@ -110,11 +110,11 @@ final class UnitTable extends PowerGridComponent
         if ($unit) {
             try {
                 $service->deleteUnit($unit);
-                $this->dispatch('toast', message: 'Unit deleted successfully.', type: 'success');
+                $this->dispatch('toast', message: __('Unit deleted successfully.'), type: 'success');
             } catch (\Exception $e) {
                 $message = $e instanceof UnitException
                     ? $e->getMessage()
-                    : 'Failed to delete unit: ' . $e->getMessage();
+                    : __('Failed to delete unit: ') . $e->getMessage();
 
                 $this->dispatch('toast', message: $message, type: 'error');
             }

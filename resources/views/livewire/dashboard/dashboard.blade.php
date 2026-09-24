@@ -3,8 +3,8 @@
         <!-- Filter Section -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-card p-4 rounded-lg border border-border shadow-sm">
         <div>
-            <h2 class="text-lg font-semibold text-foreground">Overview</h2>
-            <p class="text-sm text-muted-foreground">Monitor your business performance at a glance.</p>
+            <h2 class="text-lg font-semibold text-foreground">{{ __('Overview') }}</h2>
+            <p class="text-sm text-muted-foreground">{{ __('Monitor your business performance at a glance.') }}</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <!-- Period Selector -->
@@ -35,7 +35,7 @@
                      }
                  }"
             >
-                <input x-ref="picker" type="text" class="h-9 w-[240px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" placeholder="Select date range...">
+                <input x-ref="picker" type="text" class="h-9 w-[240px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" placeholder="{{ __('Select date range...') }}">
             </div>
 
              <!-- Refresh Button -->
@@ -46,7 +46,7 @@
             <!-- Print Button -->
             <button onclick="window.print()" class="print:hidden inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 gap-2">
                 <x-heroicon-o-printer class="h-4 w-4" />
-                <span class="hidden sm:inline">Print Report</span>
+                <span class="hidden sm:inline">{{ __('Print Report') }}</span>
             </button>
         </div>
     </div>
@@ -56,7 +56,7 @@
         <!-- Total Sales -->
         <div class="rounded-xl border bg-card text-card-foreground shadow-sm">
             <div class="p-4 flex flex-row items-center justify-between space-y-0 pb-2">
-                <h3 class="tracking-tight text-sm font-medium">Total Sales</h3>
+                <h3 class="tracking-tight text-sm font-medium">{{ __('Total Sales') }}</h3>
                 <x-heroicon-o-banknotes class="h-4 w-4 text-muted-foreground" />
             </div>
             <div class="p-4 pt-0">
@@ -64,7 +64,7 @@
                     @money($stats['total_sales'] ?? 0)
                 </div>
                 <p class="text-xs text-muted-foreground mt-1">
-                    {{ $stats['sales_count'] ?? 0 }} transactions
+                    {{ $stats['sales_count'] ?? 0 }} {{ __('transactions') }}
                 </p>
             </div>
         </div>
@@ -72,7 +72,7 @@
         <!-- Gross Profit -->
         <div class="rounded-xl border bg-card text-card-foreground shadow-sm">
             <div class="p-4 flex flex-row items-center justify-between space-y-0 pb-2">
-                <h3 class="tracking-tight text-sm font-medium">Gross Profit</h3>
+                <h3 class="tracking-tight text-sm font-medium">{{ __('Gross Profit') }}</h3>
                 <x-heroicon-o-arrow-trending-up class="h-4 w-4 text-muted-foreground" />
             </div>
             <div class="p-4 pt-0">
@@ -80,7 +80,7 @@
                     @money($stats['gross_profit'] ?? 0)
                 </div>
                 <p class="text-xs text-muted-foreground mt-1">
-                    Estimated based on COGS
+                    {{ __('Estimated based on COGS') }}
                 </p>
             </div>
         </div>
@@ -88,7 +88,7 @@
         <!-- Net Cash Flow -->
         <div class="rounded-xl border bg-card text-card-foreground shadow-sm">
             <div class="p-4 flex flex-row items-center justify-between space-y-0 pb-2">
-                <h3 class="tracking-tight text-sm font-medium">Net Cash Flow</h3>
+                <h3 class="tracking-tight text-sm font-medium">{{ __('Net Cash Flow') }}</h3>
                  <x-heroicon-o-currency-dollar class="h-4 w-4 text-muted-foreground" />
             </div>
             <div class="p-4 pt-0">
@@ -96,10 +96,10 @@
                     @money($stats['net_cash_flow'] ?? 0)
                 </div>
                 <div class="flex justify-between text-[11px] sm:text-xs text-muted-foreground mt-1">
-                    <span class="text-emerald-600 flex items-center gap-1" title="Total Income">
+                    <span class="text-emerald-600 flex items-center gap-1" title="{{ __('Total Income') }}">
                         <x-heroicon-s-arrow-up class="w-3 h-3" /> @money($stats['income'] ?? 0)
                     </span>
-                    <span class="text-red-600 flex items-center gap-1" title="Total Expense">
+                    <span class="text-red-600 flex items-center gap-1" title="{{ __('Total Expense') }}">
                         <x-heroicon-s-arrow-down class="w-3 h-3" /> @money($stats['expense'] ?? 0)
                     </span>
                 </div>
@@ -109,7 +109,7 @@
          <!-- Low Stock Alert -->
          <div class="rounded-xl border bg-card text-card-foreground shadow-sm">
             <div class="p-4 flex flex-row items-center justify-between space-y-0 pb-2">
-                <h3 class="tracking-tight text-sm font-medium">Low Stock Alert</h3>
+                <h3 class="tracking-tight text-sm font-medium">{{ __('Low Stock Alert') }}</h3>
                 <x-heroicon-o-exclamation-triangle class="h-4 w-4 text-orange-500" />
             </div>
             <div class="p-4 pt-0">
@@ -118,11 +118,11 @@
                 </div>
                 <div class="flex justify-between items-center">
                  <p class="text-xs text-muted-foreground mt-1">
-                    Items below min stock
-                </p>
+                    {{ __('Items below min stock') }}
+                 </p>
 
 
-                  <a href="{{ route('low-stock.index') }}" class="cursor-pointer text-bold text-xs text-black">View</a>
+                  <a href="{{ route('low-stock.index') }}" class="cursor-pointer text-bold text-xs text-black">{{ __('View') }}</a>
                </div>
             </div>
         </div>
@@ -133,8 +133,8 @@
         <!-- Sales Trend -->
         <div class="col-span-1 lg:col-span-2 rounded-xl border bg-card text-card-foreground shadow-sm break-inside-avoid">
             <div class="p-4 flex flex-col space-y-1.5 pb-2">
-                <h3 class="font-semibold leading-none tracking-tight">Sales Trend</h3>
-                <p class="text-xs text-muted-foreground">Daily sales performance.</p>
+                <h3 class="font-semibold leading-none tracking-tight">{{ __('Sales Trend') }}</h3>
+                <p class="text-xs text-muted-foreground">{{ __('Daily sales performance.') }}</p>
             </div>
             <div class="p-4 pt-0" wire:ignore>
                 <div id="salesChart" class="w-full h-[250px]"></div>
@@ -144,8 +144,8 @@
         <!-- Cash Flow -->
         <div class="col-span-1 rounded-xl border bg-card text-card-foreground shadow-sm break-inside-avoid">
             <div class="p-4 flex flex-col space-y-1.5 pb-2">
-                <h3 class="font-semibold leading-none tracking-tight">Income vs Expense</h3>
-                <p class="text-xs text-muted-foreground">Financial overview.</p>
+                <h3 class="font-semibold leading-none tracking-tight">{{ __('Income vs Expense') }}</h3>
+                <p class="text-xs text-muted-foreground">{{ __('Financial overview.') }}</p>
             </div>
             <div class="p-4 pt-0" wire:ignore>
                 <div id="cashFlowChart" class="w-full h-[250px]"></div>
@@ -158,16 +158,16 @@
         <!-- Recent Sales -->
         <div class="col-span-1 lg:col-span-2 rounded-xl border bg-card text-card-foreground shadow-sm break-inside-avoid">
             <div class="p-4 flex flex-col space-y-1.5 border-b">
-                <h3 class="font-semibold leading-none tracking-tight">Recent Sales</h3>
-                <p class="text-xs text-muted-foreground">Latest transactions overview.</p>
+                <h3 class="font-semibold leading-none tracking-tight">{{ __('Recent Sales') }}</h3>
+                <p class="text-xs text-muted-foreground">{{ __('Latest transactions overview.') }}</p>
             </div>
             <div class="p-0">
                 <div class="relative w-full overflow-auto max-h-[300px]">
                     <table class="w-full caption-bottom text-sm">
                         <thead class="[&_tr]:border-b sticky top-0 bg-card z-10">
                             <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                <th class="h-10 px-4 text-left align-middle font-medium text-muted-foreground">Invoice</th>
-                                <th class="h-10 px-4 text-right align-middle font-medium text-muted-foreground">Amount</th>
+                                <th class="h-10 px-4 text-left align-middle font-medium text-muted-foreground">{{ __('Invoice') }}</th>
+                                <th class="h-10 px-4 text-right align-middle font-medium text-muted-foreground">{{ __('Amount') }}</th>
                             </tr>
                         </thead>
                         <tbody class="[&_tr:last-child]:border-0 bg-transparent">
@@ -175,13 +175,13 @@
                                 <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
                                     <td class="px-4 py-2 align-middle font-medium">
                                         {{ $sale['invoice_number'] }}
-                                        <div class="text-[11px] text-muted-foreground font-normal">{{ $sale['customer']['name'] ?? 'Guest' }}</div>
+                                        <div class="text-[11px] text-muted-foreground font-normal">{{ $sale['customer']['name'] ?? __('Guest') }}</div>
                                     </td>
                                     <td class="px-4 py-2 align-middle text-right font-medium text-emerald-600">@money($sale['total'])</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="2" class="p-4 text-center text-muted-foreground">No recent sales.</td>
+                                    <td colspan="2" class="p-4 text-center text-muted-foreground">{{ __('No recent sales.') }}</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -193,8 +193,8 @@
         <!-- Expense Breakdown -->
         <div class="col-span-1 rounded-xl border bg-card text-card-foreground shadow-sm break-inside-avoid">
             <div class="p-4 flex flex-col space-y-1.5 pb-2">
-                <h3 class="font-semibold leading-none tracking-tight">Expense Breakdown</h3>
-                <p class="text-xs text-muted-foreground">Category distribution.</p>
+                <h3 class="font-semibold leading-none tracking-tight">{{ __('Expense Breakdown') }}</h3>
+                <p class="text-xs text-muted-foreground">{{ __('Category distribution.') }}</p>
             </div>
             <div class="p-4 pt-0" wire:ignore>
                 <div id="expenseChart" class="w-full h-[250px] flex items-center justify-center"></div>
@@ -206,8 +206,8 @@
         <!-- Top Selling Products -->
         <div class="col-span-1 rounded-xl border bg-card text-card-foreground shadow-sm break-inside-avoid">
             <div class="p-4 flex flex-col space-y-1.5 border-b">
-                <h3 class="font-semibold leading-none tracking-tight">Top Products</h3>
-                <p class="text-xs text-muted-foreground">Best selling items.</p>
+                <h3 class="font-semibold leading-none tracking-tight">{{ __('Top Products') }}</h3>
+                <p class="text-xs text-muted-foreground">{{ __('Best selling items.') }}</p>
             </div>
              <div class="p-4 pt-4 max-h-[300px] overflow-auto">
                 <div class="space-y-4">
@@ -218,11 +218,11 @@
                                 <p class="text-[11px] text-muted-foreground">{{ $product['sku'] }}</p>
                             </div>
                             <div class="font-semibold text-sm bg-muted px-2 py-1 rounded-md">
-                                {{ $product['total_sold'] }} <span class="text-xs font-normal text-muted-foreground">sold</span>
+                                {{ $product['total_sold'] }} <span class="text-xs font-normal text-muted-foreground">{{ __('sold') }}</span>
                             </div>
                         </div>
                     @empty
-                         <p class="text-xs text-muted-foreground text-center py-2">No product data.</p>
+                         <p class="text-xs text-muted-foreground text-center py-2">{{ __('No product data.') }}</p>
                     @endforelse
                 </div>
             </div>
@@ -231,8 +231,8 @@
         <!-- Top Customers -->
         <div class="col-span-1 rounded-xl border bg-card text-card-foreground shadow-sm break-inside-avoid">
             <div class="p-4 flex flex-col space-y-1.5 border-b">
-                <h3 class="font-semibold leading-none tracking-tight">Top Customers</h3>
-                <p class="text-xs text-muted-foreground">By highest revenue.</p>
+                <h3 class="font-semibold leading-none tracking-tight">{{ __('Top Customers') }}</h3>
+                <p class="text-xs text-muted-foreground">{{ __('By highest revenue.') }}</p>
             </div>
              <div class="p-4 pt-4 max-h-[300px] overflow-auto">
                 <div class="space-y-4">
@@ -247,7 +247,7 @@
                             </div>
                         </div>
                     @empty
-                         <p class="text-xs text-muted-foreground text-center py-2">No customer data.</p>
+                         <p class="text-xs text-muted-foreground text-center py-2">{{ __('No customer data.') }}</p>
                     @endforelse
                 </div>
             </div>
@@ -275,6 +275,12 @@
         
         const currencySymbol = "{{ \App\Models\Setting::get('currency_symbol', 'Rp') }}";
         const currencyPosition = "{{ \App\Models\Setting::get('currency_position', 'left') }}";
+        const chartI18n = {
+            sales: @json(__('Sales')),
+            income: @json(__('Income')),
+            expense: @json(__('Expense')),
+            noData: @json(__('No Data')),
+        };
 
         const formatMoney = (val) => {
             let num = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(val);
@@ -285,7 +291,7 @@
             // Sales Chart
             const salesOptions = {
                 series: [{
-                    name: 'Sales',
+                    name: chartI18n.sales,
                     data: data.sales.data
                 }],
                 chart: {
@@ -339,10 +345,10 @@
             // Cash Flow Chart
             const cashFlowOptions = {
                 series: [{
-                    name: 'Income',
+                    name: chartI18n.income,
                     data: data.cashFlow.income
                 }, {
-                    name: 'Expense',
+                    name: chartI18n.expense,
                     data: data.cashFlow.expense
                 }],
                 chart: {
@@ -393,7 +399,7 @@
             const hasExpenseData = data.expense.series && data.expense.series.length > 0;
             const expenseOptions = {
                 series: hasExpenseData ? data.expense.series.map(Number) : [1],
-                labels: hasExpenseData ? data.expense.labels : ['No Data'],
+                labels: hasExpenseData ? data.expense.labels : [chartI18n.noData],
                 chart: {
                     type: 'donut',
                     height: 250,

@@ -79,10 +79,10 @@ class CustomerForm extends Component
 
             if ($this->isEditing && $this->customer) {
                 $service->updateCustomer($this->customer, $customerData);
-                $message = 'Customer updated successfully.';
+                $message = __('Customer updated successfully.');
             } else {
                 $service->createCustomer($customerData);
-                $message = 'Customer created successfully.';
+                $message = __('Customer created successfully.');
             }
 
             $this->dispatch('close-modal', name: 'customer-modal');
@@ -92,7 +92,7 @@ class CustomerForm extends Component
             $this->reset();
 
         } catch (Exception $e) {
-            $this->dispatch('toast', message: 'Error: ' . $e->getMessage(), type: 'error');
+            $this->dispatch('toast', message: __('Error: ') . $e->getMessage(), type: 'error');
         }
     }
 }

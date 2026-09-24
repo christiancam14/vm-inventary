@@ -47,15 +47,15 @@ final class SettingTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Setting Name', 'key_label', 'key')
+            Column::make(__('Setting Name'), 'key_label', 'key')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Value', 'value_limited', 'value')
+            Column::make(__('Value'), 'value_limited', 'value')
                 ->sortable()
                 ->searchable(),
 
-            Column::action('Action')
+            Column::action(__('Action'))
         ];
     }
 

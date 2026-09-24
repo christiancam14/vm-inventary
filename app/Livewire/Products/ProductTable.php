@@ -91,76 +91,76 @@ final class ProductTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::action('Action'),
+            Column::action(__('Action')),
 
-            Column::make('ID', 'id')
+            Column::make(__('ID'), 'id')
                 ->hidden()
                 ->visibleInExport(false),
 
-            Column::make('SKU', 'sku')
+            Column::make(__('SKU'), 'sku')
                 ->searchable(),
 
-            Column::make('Barcode', 'barcode')
+            Column::make(__('Barcode'), 'barcode')
                 ->searchable(),
 
-            Column::make('Name', 'name_formatted', 'name')
+            Column::make(__('Name'), 'name_formatted', 'name')
                 ->sortable()
                 ->searchable()
                 ->visibleInExport(false),
 
-            Column::make('Name', 'name')
+            Column::make(__('Name'), 'name')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Category', 'category_name', 'category_id')
+            Column::make(__('Category'), 'category_name', 'category_id')
                 ->sortable()
                 ->searchable()
                 ->visibleInExport(false),
 
-            Column::make('Category', 'category_slug', 'category_id')
+            Column::make(__('Category'), 'category_slug', 'category_id')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Unit', 'unit_symbol', 'unit_id')
+            Column::make(__('Unit'), 'unit_symbol', 'unit_id')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Buying Price', 'purchase_price_formatted', 'purchase_price')
+            Column::make(__('Buying Price'), 'purchase_price_formatted', 'purchase_price')
                 ->sortable()
                 ->bodyAttribute('text-right'),
 
-            Column::make('Selling Price', 'selling_price_formatted', 'selling_price')
+            Column::make(__('Selling Price'), 'selling_price_formatted', 'selling_price')
                 ->sortable()
                 ->bodyAttribute('text-right'),
 
-            Column::make('Margin', 'margin_formatted')
+            Column::make(__('Margin'), 'margin_formatted')
                 ->bodyAttribute('text-right text-indigo-600')
                 ->visibleInExport(false),
 
-            Column::make('Qty', 'quantity')
+            Column::make(__('Qty'), 'quantity')
                 ->sortable()
                 ->bodyAttribute('text-center'),
 
-            Column::make('Min Qty', 'min_stock')
+            Column::make(__('Min Qty'), 'min_stock')
                 ->sortable()
                 ->bodyAttribute('text-center'),
 
-            Column::make('Status', 'is_active_label', 'is_active')
+            Column::make(__('Status'), 'is_active_label', 'is_active')
                 ->sortable()
                 ->headerAttribute('text-center')
                 ->bodyAttribute('text-center')
                 ->visibleInExport(false),
 
-            Column::make('Status', 'is_active_export', 'is_active')
+            Column::make(__('Status'), 'is_active_export', 'is_active')
                 ->hidden()
                 ->visibleInExport(true),
 
             // Exports
-            Column::make('Description', 'description')
+            Column::make(__('Description'), 'description')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Created At', 'created_at_formatted', 'created_at')
+            Column::make(__('Created At'), 'created_at_formatted', 'created_at')
                 ->hidden()
                 ->visibleInExport(true),
         ];
@@ -183,8 +183,8 @@ final class ProductTable extends PowerGridComponent
 
             Filter::multiSelect('is_active_label', 'is_active')
                 ->dataSource(collect([
-                    ['value' => 1, 'text' => 'Active'],
-                    ['value' => 0, 'text' => 'Inactive'],
+                    ['value' => 1, 'text' => __('Active')],
+                    ['value' => 0, 'text' => __('Inactive')],
                 ]))
                 ->optionValue('value')
                 ->optionLabel('text'),
@@ -229,11 +229,11 @@ final class ProductTable extends PowerGridComponent
         if ($product) {
             try {
                 $service->deleteProduct($product);
-                $this->dispatch('toast', message: 'Product deleted successfully.', type: 'success');
+                $this->dispatch('toast', message: __('Product deleted successfully.'), type: 'success');
             } catch (\Exception $e) {
                 $message = $e instanceof ProductException
                     ? $e->getMessage()
-                    : 'Failed to delete product: ' . $e->getMessage();
+                    : __('Failed to delete product: ') . $e->getMessage();
 
                 $this->dispatch('toast', message: $message, type: 'error');
             }

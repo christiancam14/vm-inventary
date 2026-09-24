@@ -64,7 +64,7 @@ class FinanceCategoryForm extends Component
         $this->validate();
 
         if ($this->isEditing && $this->category && in_array($this->category->name, ['Product Sales', 'Product Purchases'])) {
-            $this->dispatch('toast', ['message' => 'System categories cannot be edited.', 'type' => 'error']);
+            $this->dispatch('toast', ['message' => __('System categories cannot be edited.'), 'type' => 'error']);
             return;
         }
 
@@ -80,10 +80,10 @@ class FinanceCategoryForm extends Component
         try {
             if ($this->isEditing && $this->category) {
                 $service->updateCategory($this->category, $data);
-                $message = 'Finance Category updated successfully.';
+                $message = __('Finance Category updated successfully.');
             } else {
                 $service->createCategory($data);
-                $message = 'Finance Category created successfully.';
+                $message = __('Finance Category created successfully.');
             }
 
             $this->dispatch('close-modal', name: 'finance-category-form-modal');
@@ -92,7 +92,7 @@ class FinanceCategoryForm extends Component
         } catch (FinanceCategoryException $e) {
             $this->dispatch('toast', message: $e->getMessage(), type: 'error');
         } catch (\Throwable $e) {
-            $this->dispatch('toast', message: 'An unexpected error occurred.', type: 'error');
+            $this->dispatch('toast', message: __('An unexpected error occurred.'), type: 'error');
         }
     }
 }

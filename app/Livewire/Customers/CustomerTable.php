@@ -61,32 +61,32 @@ final class CustomerTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
+            Column::make(__('ID'), 'id')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Name', 'name')
+            Column::make(__('Name'), 'name')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Email', 'email')
+            Column::make(__('Email'), 'email')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Phone', 'phone')
+            Column::make(__('Phone'), 'phone')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Registered At', 'created_at_formatted', 'created_at')
+            Column::make(__('Registered At'), 'created_at_formatted', 'created_at')
                 ->sortable()
                 ->visibleInExport(false),
 
             // Export Columns
-            Column::make('Notes', 'notes')
+            Column::make(__('Notes'), 'notes')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::action('Action'),
+            Column::action(__('Action')),
         ];
     }
 
@@ -127,12 +127,12 @@ final class CustomerTable extends PowerGridComponent
         if ($customer) {
             try {
                 $customerService->deleteCustomer($customer);
-                $this->dispatch('toast', message: 'Customer deleted successfully.', type: 'success');
+                $this->dispatch('toast', message: __('Customer deleted successfully.'), type: 'success');
             } catch (\Exception $e) {
                 // Ensure we catch our custom exception or fallback to general exception
                 $message = $e instanceof CustomerException
                     ? $e->getMessage()
-                    : 'Failed to delete customer: ' . $e->getMessage();
+                    : __('Failed to delete customer: ') . $e->getMessage();
 
                 $this->dispatch('toast', message: $message, type: 'error');
             }

@@ -59,36 +59,36 @@ final class SupplierTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
+            Column::make(__('ID'), 'id')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Name', 'name')
+            Column::make(__('Name'), 'name')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Contact Person', 'contact_person')
+            Column::make(__('Contact Person'), 'contact_person')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Email', 'email')
+            Column::make(__('Email'), 'email')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Phone', 'phone')
+            Column::make(__('Phone'), 'phone')
                 ->sortable()
                 ->searchable(),
 
             // Exports
-            Column::make('Address', 'address')
+            Column::make(__('Address'), 'address')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Notes', 'notes')
+            Column::make(__('Notes'), 'notes')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::action('Action'),
+            Column::action(__('Action')),
         ];
     }
 
@@ -129,11 +129,11 @@ final class SupplierTable extends PowerGridComponent
         if ($supplier) {
             try {
                 $supplierService->deleteSupplier($supplier);
-                $this->dispatch('toast', message: 'Supplier deleted successfully.', type: 'success');
+                $this->dispatch('toast', message: __('Supplier deleted successfully.'), type: 'success');
             } catch (\Exception $e) {
                 $message = $e instanceof SupplierException
                     ? $e->getMessage()
-                    : 'Failed to delete supplier: ' . $e->getMessage();
+                    : __('Failed to delete supplier: ') . $e->getMessage();
 
                 $this->dispatch('toast', message: $message, type: 'error');
             }

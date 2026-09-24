@@ -83,7 +83,7 @@ class SettingForm extends Component
         }
 
         $this->dispatch('pg:eventRefresh-setting-table');
-        $this->dispatch('toast', message: 'Default settings loaded. Edit any value as needed.', type: 'success');
+        $this->dispatch('toast', message: __('Default settings loaded. Edit any value as needed.'), type: 'success');
     }
 
     public function save(): void
@@ -101,11 +101,11 @@ class SettingForm extends Component
             $this->dispatch('pg:eventRefresh-setting-table');
             $this->dispatch(
                 'toast',
-                message: $this->isCreating ? 'Setting created successfully.' : 'Setting updated successfully.',
+                message: $this->isCreating ? __('Setting created successfully.') : __('Setting updated successfully.'),
                 type: 'success'
             );
         } catch (\Exception $e) {
-            $this->dispatch('toast', message: 'Failed to save setting: ' . $e->getMessage(), type: 'error');
+            $this->dispatch('toast', message: __('Failed to save setting: ') . $e->getMessage(), type: 'error');
         }
     }
 

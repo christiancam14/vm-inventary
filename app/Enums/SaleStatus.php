@@ -11,9 +11,9 @@ enum SaleStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::PENDING => 'Pending',
-            self::COMPLETED => 'Completed',
-            self::CANCELLED => 'Cancelled',
+            self::PENDING => __('Pending'),
+            self::COMPLETED => __('Completed'),
+            self::CANCELLED => __('Cancelled'),
         };
     }
 

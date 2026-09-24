@@ -3,10 +3,10 @@
         <!-- Custom Header -->
         <div class="mb-6 space-y-1.5 text-center sm:text-left border-b border-gray-200 pb-4">
             <h3 class="text-lg font-semibold leading-none tracking-tight text-foreground">
-                {{ $isEditing ? 'Edit Product' : 'Create Product' }}
+                {{ $isEditing ? __('Edit Product') : __('Create Product') }}
             </h3>
             <p class="text-sm text-muted-foreground">
-                {{ $isEditing ? 'Make changes to your product here. Click save when you\'re done.' : 'Add a new product to your inventory.' }}
+                {{ $isEditing ? __('Make changes to your product here. Click save when you\'re done.') : __('Add a new product to your inventory.') }}
             </p>
         </div>
 

@@ -62,10 +62,10 @@ class UnitForm extends Component
         try {
             if ($this->isEditing && $this->unit) {
                 $service->updateUnit($this->unit, $data);
-                $message = 'Unit updated successfully.';
+                $message = __('Unit updated successfully.');
             } else {
                 $service->createUnit($data);
-                $message = 'Unit created successfully.';
+                $message = __('Unit created successfully.');
             }
 
             $this->dispatch('close-modal', name: 'unit-form-modal');
@@ -74,7 +74,7 @@ class UnitForm extends Component
         } catch (UnitException $e) {
             $this->dispatch('toast', message: $e->getMessage(), type: 'error');
         } catch (\Throwable $e) {
-            $this->dispatch('toast', message: 'An unexpected error occurred.', type: 'error');
+            $this->dispatch('toast', message: __('An unexpected error occurred.'), type: 'error');
         }
     }
 }

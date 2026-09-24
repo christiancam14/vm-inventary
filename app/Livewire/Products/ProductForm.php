@@ -118,10 +118,10 @@ class ProductForm extends Component
         try {
             if ($this->isEditing && $this->product) {
                 $service->updateProduct($this->product, $data);
-                $message = 'Product updated successfully.';
+                $message = __('Product updated successfully.');
             } else {
                 $service->createProduct($data);
-                $message = 'Product created successfully.';
+                $message = __('Product created successfully.');
             }
 
             $this->dispatch('close-modal', name: 'product-form-modal');
@@ -130,7 +130,7 @@ class ProductForm extends Component
         } catch (ProductException $e) {
             $this->dispatch('toast', message: $e->getMessage(), type: 'error');
         } catch (\Throwable $e) {
-            $this->dispatch('toast', message: 'An unexpected error occurred.', type: 'error');
+            $this->dispatch('toast', message: __('An unexpected error occurred.'), type: 'error');
         }
     }
 }

@@ -69,27 +69,27 @@ final class FinanceCategoryTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
+            Column::make(__('ID'), 'id')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Name', 'name')
+            Column::make(__('Name'), 'name')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Type', 'type_badge', 'type')
+            Column::make(__('Type'), 'type_badge', 'type')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Slug', 'slug')
+            Column::make(__('Slug'), 'slug')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Description', 'description')
+            Column::make(__('Description'), 'description')
                 ->sortable()
                 ->searchable(),
 
-            Column::action('Action'),
+            Column::action(__('Action')),
         ];
     }
 
@@ -150,17 +150,17 @@ final class FinanceCategoryTable extends PowerGridComponent
         if ($category) {
             // Protect System Categories
             if (in_array($category->name, ['Product Sales', 'Product Purchases'])) {
-                $this->dispatch('toast', ['message' => 'System categories cannot be deleted.', 'type' => 'error']);
+                $this->dispatch('toast', ['message' => __('System categories cannot be deleted.'), 'type' => 'error']);
                 return;
             }
 
             try {
                 $service->deleteCategory($category);
-                $this->dispatch('toast', ['message' => 'Category deleted successfully.', 'type' => 'success']);
+                $this->dispatch('toast', ['message' => __('Category deleted successfully.'), 'type' => 'success']);
             } catch (\Exception $e) {
                 $message = $e instanceof FinanceCategoryException
                     ? $e->getMessage()
-                    : 'Failed to delete category: ' . $e->getMessage();
+                    : __('Failed to delete category: ') . $e->getMessage();
 
                 $this->dispatch('toast', ['message' => $message, 'type' => 'error']);
             }

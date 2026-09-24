@@ -83,10 +83,10 @@ class SupplierForm extends Component
 
             if ($this->isEditing && $this->supplier) {
                 $service->updateSupplier($this->supplier, $supplierData);
-                $message = 'Supplier updated successfully.';
+                $message = __('Supplier updated successfully.');
             } else {
                 $service->createSupplier($supplierData);
-                $message = 'Supplier created successfully.';
+                $message = __('Supplier created successfully.');
             }
 
             $this->dispatch('close-modal', name: 'supplier-modal');
@@ -96,7 +96,7 @@ class SupplierForm extends Component
             $this->reset();
 
         } catch (Exception $e) {
-            $this->dispatch('toast', message: 'Error: ' . $e->getMessage(), type: 'error');
+            $this->dispatch('toast', message: __('Error: ') . $e->getMessage(), type: 'error');
         }
     }
 }

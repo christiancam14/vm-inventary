@@ -56,26 +56,26 @@ final class UserTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
+            Column::make(__('ID'), 'id')
                 ->visibleInExport(true)
                 ->hidden(),
 
-            Column::make('Name', 'name')
+            Column::make(__('Name'), 'name')
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Username', 'username')
+            Column::make(__('Username'), 'username')
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Email', 'email')
+            Column::make(__('Email'), 'email')
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Created At', 'created_at_formatted', 'created_at')
+            Column::make(__('Created At'), 'created_at_formatted', 'created_at')
                 ->sortable(),
 
-            Column::action('Action')
+            Column::action(__('Action'))
         ];
     }
 
@@ -116,7 +116,7 @@ final class UserTable extends PowerGridComponent
         if ($user) {
             try {
                 $service->deleteUser($user);
-                $this->dispatch('toast', message: 'User deleted successfully.', type: 'success');
+                $this->dispatch('toast', message: __('User deleted successfully.'), type: 'success');
             } catch (\Exception $e) {
                 $this->dispatch('toast', message: $e->getMessage(), type: 'error');
             }

@@ -72,33 +72,33 @@ final class SalesTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::action('Action'),
+            Column::action(__('Action')),
 
-            Column::make('ID', 'id')->hidden(),
+            Column::make(__('ID'), 'id')->hidden(),
 
-            Column::make('Invoice', 'invoice_number')
+            Column::make(__('Invoice'), 'invoice_number')
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Customer', 'customer_name', 'customer_id')
+            Column::make(__('Customer'), 'customer_name', 'customer_id')
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Created By', 'creator_name', 'created_by')
+            Column::make(__('Created By'), 'creator_name', 'created_by')
                 ->sortable(),
 
-            Column::make('Date', 'sale_date_formatted', 'sale_date')
+            Column::make(__('Date'), 'sale_date_formatted', 'sale_date')
                 ->sortable(),
 
-            Column::make('Period', 'date_period')
+            Column::make(__('Period'), 'date_period')
                 ->hidden(),
 
-            Column::make('Total', 'total_formatted', 'total')
+            Column::make(__('Total'), 'total_formatted', 'total')
                 ->sortable()
                 ->headerAttribute('text-right')
                 ->bodyAttribute('text-right'),
 
-            Column::make('Status', 'status_badge', 'status')
+            Column::make(__('Status'), 'status_badge', 'status')
                 ->sortable()
                 ->headerAttribute('text-center')
                 ->bodyAttribute('text-center'),
@@ -146,12 +146,12 @@ final class SalesTable extends PowerGridComponent
 
             Filter::select('date_period')
                 ->dataSource([
-                    ['name' => 'Today', 'value' => 'today'],
-                    ['name' => 'Yesterday', 'value' => 'yesterday'],
-                    ['name' => 'This Week', 'value' => 'this_week'],
-                    ['name' => 'Last Week', 'value' => 'last_week'],
-                    ['name' => 'This Month', 'value' => 'this_month'],
-                    ['name' => 'Last Month', 'value' => 'last_month'],
+                    ['name' => __('Today'), 'value' => 'today'],
+                    ['name' => __('Yesterday'), 'value' => 'yesterday'],
+                    ['name' => __('This Week'), 'value' => 'this_week'],
+                    ['name' => __('Last Week'), 'value' => 'last_week'],
+                    ['name' => __('This Month'), 'value' => 'this_month'],
+                    ['name' => __('Last Month'), 'value' => 'last_month'],
                 ])
                 ->optionLabel('name')
                 ->optionValue('value')
@@ -219,11 +219,11 @@ final class SalesTable extends PowerGridComponent
         if ($sale) {
             try {
                 $saleService->deleteSale($sale);
-                $this->dispatch('toast', message: 'Sale deleted successfully.', type: 'success');
+                $this->dispatch('toast', message: __('Sale deleted successfully.'), type: 'success');
             } catch (SaleException $e) {
-                $this->dispatch('toast', message: 'Delete failed: ' . $e->getMessage(), type: 'error');
+                $this->dispatch('toast', message: __('Delete failed: ') . $e->getMessage(), type: 'error');
             } catch (\Exception $e) {
-                $this->dispatch('toast', message: 'Error: ' . $e->getMessage(), type: 'error');
+                $this->dispatch('toast', message: __('Error: ') . $e->getMessage(), type: 'error');
             }
         }
     }

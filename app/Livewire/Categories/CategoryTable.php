@@ -58,23 +58,23 @@ final class CategoryTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
+            Column::make(__('ID'), 'id')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Name', 'name')
+            Column::make(__('Name'), 'name')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Slug', 'slug')
+            Column::make(__('Slug'), 'slug')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Description', 'description')
+            Column::make(__('Description'), 'description')
                 ->sortable()
                 ->searchable(),
 
-            Column::action('Action'),
+            Column::action(__('Action')),
         ];
     }
 
@@ -115,11 +115,11 @@ final class CategoryTable extends PowerGridComponent
         if ($category) {
             try {
                 $service->deleteCategory($category);
-                $this->dispatch('toast', message: 'Category deleted successfully.', type: 'success');
+                $this->dispatch('toast', message: __('Category deleted successfully.'), type: 'success');
             } catch (\Exception $e) {
                 $message = $e instanceof CategoryException
                     ? $e->getMessage()
-                    : 'Failed to delete category: ' . $e->getMessage();
+                    : __('Failed to delete category: ') . $e->getMessage();
 
                 $this->dispatch('toast', message: $message, type: 'error');
             }

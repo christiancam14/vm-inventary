@@ -87,40 +87,40 @@ final class FinanceTransactionTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
+            Column::make(__('ID'), 'id')
                 ->hidden()
                 ->visibleInExport(true),
 
-            Column::make('Date', 'transaction_date_formatted', 'transaction_date')
+            Column::make(__('Date'), 'transaction_date_formatted', 'transaction_date')
                 ->sortable(),
 
-            Column::make('Reference', 'reference_display', 'code')
+            Column::make(__('Reference'), 'reference_display', 'code')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Period', 'date_period')
+            Column::make(__('Period'), 'date_period')
                 ->hidden(),
 
-            Column::make('Category', 'category_name', 'finance_category_id')
+            Column::make(__('Category'), 'category_name', 'finance_category_id')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Type', 'type_badge')
+            Column::make(__('Type'), 'type_badge')
                 ->sortable(),
 
-            Column::make('Amount', 'amount_formatted', 'amount')
+            Column::make(__('Amount'), 'amount_formatted', 'amount')
                 ->sortable()
                 ->headerAttribute('text-right')
                 ->bodyAttribute('text-right'),
 
-            Column::make('Description', 'description')
+            Column::make(__('Description'), 'description')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Created By', 'creator_name', 'created_by')
+            Column::make(__('Created By'), 'creator_name', 'created_by')
                 ->sortable(),
 
-            Column::action('Action'),
+            Column::action(__('Action')),
         ];
     }
 
@@ -143,12 +143,12 @@ final class FinanceTransactionTable extends PowerGridComponent
 
             Filter::select('date_period')
                 ->dataSource([
-                    ['name' => 'Today', 'value' => 'today'],
-                    ['name' => 'Yesterday', 'value' => 'yesterday'],
-                    ['name' => 'This Week', 'value' => 'this_week'],
-                    ['name' => 'Last Week', 'value' => 'last_week'],
-                    ['name' => 'This Month', 'value' => 'this_month'],
-                    ['name' => 'Last Month', 'value' => 'last_month'],
+                    ['name' => __('Today'), 'value' => 'today'],
+                    ['name' => __('Yesterday'), 'value' => 'yesterday'],
+                    ['name' => __('This Week'), 'value' => 'this_week'],
+                    ['name' => __('Last Week'), 'value' => 'last_week'],
+                    ['name' => __('This Month'), 'value' => 'this_month'],
+                    ['name' => __('Last Month'), 'value' => 'last_month'],
                 ])
                 ->optionLabel('name')
                 ->optionValue('value')
@@ -244,7 +244,7 @@ final class FinanceTransactionTable extends PowerGridComponent
         $checkboxValues = $this->checkboxValues;
 
         if (empty($checkboxValues)) {
-            $this->dispatch('toast', message: 'No transactions selected.', type: 'warning');
+            $this->dispatch('toast', message: __('No transactions selected.'), type: 'warning');
             return;
         }
 
@@ -278,11 +278,11 @@ final class FinanceTransactionTable extends PowerGridComponent
         if ($transaction) {
             try {
                 $service->deleteTransaction($transaction);
-                $this->dispatch('toast', message: 'Transaction deleted successfully.', type: 'success');
+                $this->dispatch('toast', message: __('Transaction deleted successfully.'), type: 'success');
             } catch (\Exception $e) {
                 $message = $e instanceof FinanceTransactionException
                     ? $e->getMessage()
-                    : 'Failed to delete transaction: ' . $e->getMessage();
+                    : __('Failed to delete transaction: ') . $e->getMessage();
 
                 $this->dispatch('toast', message: $message, type: 'error');
             }
