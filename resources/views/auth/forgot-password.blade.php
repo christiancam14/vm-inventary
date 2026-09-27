@@ -28,7 +28,7 @@
 
         <div class="mt-4 text-center text-sm">
             <a href="{{ route('login') }}" class="underline text-muted-foreground hover:text-foreground">
-                Back to Login
+                {{ __('Back to Login') }}
             </a>
         </div>
     </form>

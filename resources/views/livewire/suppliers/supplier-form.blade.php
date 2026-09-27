@@ -19,7 +19,7 @@
                         label="Supplier Name"
                         type="text"
                         wire:model="name"
-                        placeholder="Company Name"
+                        placeholder="{{ __('Company Name') }}"
                         required
                     />
                 </div>
@@ -29,7 +29,7 @@
                         label="Contact Person"
                         type="text"
                         wire:model="contact_person"
-                        placeholder="Contact Person Name"
+                        placeholder="{{ __('Contact Person Name') }}"
                         required
                     />
                 </div>
@@ -52,7 +52,7 @@
                         label="Phone"
                         type="text"
                         wire:model="phone"
-                        placeholder="+62..."
+                        placeholder="{{ __('e.g. phone') }}"
                     />
                 </div>
             </div>
@@ -64,7 +64,7 @@
                     wire:model="address"
                     rows="3"
                     class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Full Address"
+                    placeholder="{{ __('Full Address') }}"
                 ></textarea>
                 <x-input-error :messages="$errors->get('address')" />
             </div>
@@ -76,7 +76,7 @@
                     wire:model="notes"
                     rows="3"
                     class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Additional notes..."
+                    placeholder="{{ __('Additional notes...') }}"
                 ></textarea>
                 <x-input-error :messages="$errors->get('notes')" />
             </div>

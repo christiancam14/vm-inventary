@@ -10,8 +10,8 @@ enum FinanceCategoryType: string
     public function label(): string
     {
         return match ($this) {
-            self::Expense => 'Expense',
-            self::Income => 'Income',
+            self::Expense => __('Expense'),
+            self::Income => __('Income'),
         };
     }
 

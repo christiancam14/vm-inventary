@@ -3,10 +3,10 @@
         <!-- Custom Header -->
         <div class="mb-6 space-y-1.5 text-center sm:text-left border-b border-gray-200 pb-4">
             <h3 class="text-lg font-semibold leading-none tracking-tight text-foreground">
-                {{ $isEditing ? 'Edit Transaction' : 'Create Transaction' }}
+                {{ $isEditing ? __('Edit Transaction') : __('Create Transaction') }}
             </h3>
             <p class="text-sm text-muted-foreground">
-                {{ $isEditing ? 'Update transaction details below.' : 'Record a new income or expense.' }}
+                {{ $isEditing ? __('Update transaction details below.') : __('Record a new income or expense.') }}
             </p>
         </div>
 
@@ -16,7 +16,7 @@
                 <!-- Date -->
                 <x-form-input
                     name="transaction_date"
-                    label="Transaction Date"
+                    :label="__('Transaction Date')"
                     type="date"
                     wire:model="transaction_date"
                     required
@@ -25,8 +25,8 @@
                 <!-- Reference -->
                 <x-form-input
                     name="external_reference"
-                    label="External Reference"
-                    placeholder="e.g. INV.001 or Receipt #123"
+                    :label="__('External Reference')"
+                    :placeholder="__('e.g. INV.001 or Receipt #123')"
                     type="text"
                     wire:model="external_reference"
                 />
@@ -41,7 +41,7 @@
                         <input type="radio" name="type" value="income" wire:model.live="type" class="peer sr-only" required>
                         <div class="relative flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-4 py-2.5 text-center transition-all hover:bg-accent hover:text-accent-foreground peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 peer-checked:ring-1 peer-checked:ring-emerald-500">
                             <x-heroicon-s-arrow-trending-up class="h-4 w-4" />
-                            <span class="text-sm font-medium">Income</span>
+                            <span class="text-sm font-medium">{{ __('Income') }}</span>
                         </div>
                     </label>
 
@@ -50,7 +50,7 @@
                         <input type="radio" name="type" value="expense" wire:model.live="type" class="peer sr-only" required>
                         <div class="relative flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-4 py-2.5 text-center transition-all hover:bg-accent hover:text-accent-foreground peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-700 peer-checked:ring-1 peer-checked:ring-red-500">
                             <x-heroicon-s-arrow-trending-down class="h-4 w-4" />
-                            <span class="text-sm font-medium">Expense</span>
+                            <span class="text-sm font-medium">{{ __('Expense') }}</span>
                         </div>
                     </label>
                 </div>
@@ -62,10 +62,10 @@
                 <x-searchable-select
                     id="finance_category_id"
                     name="finance_category_id"
-                    label="Category"
+                    :label="__('Category')"
                     wire:model="finance_category_id"
                     :options="$categoryOptions"
-                    placeholder="Select Category"
+                    :placeholder="__('Select Category')"
                     :required="true"
                 />
             </div>
@@ -84,13 +84,13 @@
 
             <!-- Description -->
             <div class="space-y-2">
-                <x-input-label for="description" value="Description" />
+                <x-input-label for="description" :value="__('Description')" />
                 <textarea
                     id="description"
                     wire:model="description"
                     rows="3"
                     class="block w-full rounded-md border-input bg-background shadow-sm focus:border-ring focus:ring-ring sm:text-sm"
-                    placeholder="Optional details..."
+                    placeholder="{{ __('Optional details...') }}"
                 ></textarea>
                 <x-input-error :messages="$errors->get('description')" />
             </div>

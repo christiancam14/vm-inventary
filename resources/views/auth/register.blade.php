@@ -1,8 +1,8 @@
 <x-guest-layout title="Register">
     <div class="space-y-6">
         <div class="space-y-2 text-center">
-            <h1 class="text-2xl font-semibold tracking-tight">Create an account</h1>
-            <p class="text-sm text-muted-foreground">Enter your details below to create your account</p>
+            <h1 class="text-2xl font-semibold tracking-tight">{{ __('Create an account') }}</h1>
+            <p class="text-sm text-muted-foreground">{{ __('Enter your details below to create your account') }}</p>
         </div>
 
         <form method="POST" action="{{ route('register') }}" x-data="{ loading: false }" @submit="loading = true">

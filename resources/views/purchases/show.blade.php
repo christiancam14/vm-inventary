@@ -36,28 +36,28 @@
                     <!-- Content Grid -->
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <!-- Supplier -->
-                        <x-detail-item label="Supplier" :value="$purchase->supplier->name">
+                        <x-detail-item :label="__('Supplier')" :value="$purchase->supplier->name">
                             <x-heroicon-o-building-storefront class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Invoice -->
-                        <x-detail-item label="Invoice Number" :value="$purchase->invoice_number ?? '-'">
+                        <x-detail-item :label="__('Invoice Number')" :value="$purchase->invoice_number ?? '-'">
                             <x-heroicon-o-document-text class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Purchase Date -->
-                        <x-detail-item label="Purchase Date" :value="$purchase->purchase_date->format('d M Y')">
+                        <x-detail-item :label="__('Purchase Date')" :value="$purchase->purchase_date->locale('es')->translatedFormat('d M Y')">
                             <x-heroicon-o-calendar class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Due Date -->
-                        <x-detail-item label="Due Date" :value="$purchase->due_date ? $purchase->due_date->format('d M Y') : '-'">
+                        <x-detail-item :label="__('Due Date')" :value="$purchase->due_date ? $purchase->due_date->locale('es')->translatedFormat('d M Y') : '-'">
                             <x-heroicon-o-calendar class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Status -->
                         <div>
-                            <label class="text-sm font-medium leading-none text-gray-500">Status</label>
+                            <label class="text-sm font-medium leading-none text-gray-500">{{ __('Status') }}</label>
                             <div class="mt-1">
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $purchase->status->color() }}">
                                     {{ $purchase->status->label() }}
@@ -66,28 +66,28 @@
                         </div>
 
                         <!-- Total Amount -->
-                        <x-detail-item label="Total Amount" :value="format_money($purchase->total)">
+                        <x-detail-item :label="__('Total Amount')" :value="format_money($purchase->total)">
                             <x-heroicon-o-banknotes class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Created By -->
-                        <x-detail-item label="Created By" :value="$purchase->creator->name ?? 'Unknown'">
+                        <x-detail-item :label="__('Created By')" :value="$purchase->creator->name ?? __('Unknown')">
                             <x-heroicon-o-user class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Proof Image -->
                         @if($purchase->proof_image)
                             <div>
-                                <label class="text-sm font-medium leading-none text-gray-500">Proof of Receipt</label>
+                                <label class="text-sm font-medium leading-none text-gray-500">{{ __('Proof of Receipt') }}</label>
                                 <div class="mt-1">
                                     <a href="{{ Storage::url($purchase->proof_image) }}" target="_blank" class="text-indigo-600 hover:underline text-sm flex items-center gap-1">
                                         <x-heroicon-o-paper-clip class="w-4 h-4" />
-                                        View Image
+                                        {{ __('View Image') }}
                                     </a>
                                 </div>
                             </div>
                         @else
-                            <x-detail-item label="Proof of Receipt" value="-" />
+                            <x-detail-item :label="__('Proof of Receipt')" value="-" />
                         @endif
                     </div>
 
@@ -95,26 +95,27 @@
                     <div class="mt-6 pt-6 border-t border-gray-100">
                         <div class="space-y-1">
                             <label class="text-sm font-medium leading-none text-gray-500">
-                                Notes
+                                {{ __('Notes') }}
                             </label>
                             <div class="bg-gray-50 p-3 rounded-md border border-gray-100">
-                                <p class="text-sm text-slate-700 italic leading-relaxed">{{ $purchase->notes ?: 'No additional notes.' }}</p>
+                                <p class="text-sm text-slate-700 italic leading-relaxed">{{ $purchase->notes ?: __('No additional notes.') }}</p>
                             </div>
                         </div>
                     </div>
 
+                    @if($purchase->items->isNotEmpty())
                     <!-- Items Table Section -->
                     <div class="mt-6 border-t overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3">Code</th>
-                                    <th class="px-6 py-3">Product</th>
-                                    <th class="px-6 py-3">Unit</th>
-                                    <th class="px-6 py-3 text-center">Quantity</th>
-                                    <th class="px-6 py-3 text-right">Buying Price</th>
-                                    <th class="px-6 py-3 text-right">Selling Price</th>
-                                    <th class="px-6 py-3 text-right">Subtotal</th>
+                                    <th class="px-6 py-3">{{ __('Code') }}</th>
+                                    <th class="px-6 py-3">{{ __('Product') }}</th>
+                                    <th class="px-6 py-3">{{ __('Unit') }}</th>
+                                    <th class="px-6 py-3 text-center">{{ __('Quantity') }}</th>
+                                    <th class="px-6 py-3 text-right">{{ __('Buying Price') }}</th>
+                                    <th class="px-6 py-3 text-right">{{ __('Selling Price') }}</th>
+                                    <th class="px-6 py-3 text-right">{{ __('Subtotal') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -146,7 +147,7 @@
                             </tbody>
                             <tfoot class="bg-gray-50 font-bold">
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 text-right">Total</td>
+                                    <td colspan="6" class="px-6 py-4 text-right">{{ __('Total') }}</td>
                                     <td class="px-6 py-4 text-right text-indigo-600 text-lg">
                                         @money($purchase->total)
                                     </td>
@@ -154,6 +155,7 @@
                             </tfoot>
                         </table>
                     </div>
+                    @endif
                 </div>
             </div>
 
@@ -184,7 +186,7 @@
                     {{-- Delete Action --}}
                     <x-danger-button
                         type="button"
-                        @click="confirmAction('{{ route('purchases.destroy', $purchase) }}', 'DELETE', 'Delete Draft', 'Are you sure you want to delete this draft? This action cannot be undone.', 'Delete Draft', '!bg-red-600 hover:!bg-red-700 focus:!ring-red-500')"
+                        @click="confirmAction('{{ route('purchases.destroy', $purchase) }}', 'DELETE', {{ Js::from(__('Delete Draft')) }}, {{ Js::from(__('Are you sure you want to delete this draft? This action cannot be undone.')) }}, {{ Js::from(__('Delete Draft')) }}, '!bg-red-600 hover:!bg-red-700 focus:!ring-red-500')"
                     >
                         {{ __('Delete Draft') }}
                     </x-danger-button>
@@ -193,7 +195,7 @@
                     <x-primary-button
                         type="button"
                         class="!bg-sky-600 hover:!bg-sky-700 focus:!ring-sky-500"
-                        @click="confirmAction('{{ route('purchases.mark-ordered', $purchase) }}', 'PATCH', 'Mark as Ordered', 'Are you sure you want to mark this purchase as ordered? The stock will not be updated until items are received.', 'Mark as Ordered', '!bg-sky-600 hover:!bg-sky-700 focus:!ring-sky-500')"
+                        @click="confirmAction('{{ route('purchases.mark-ordered', $purchase) }}', 'PATCH', {{ Js::from(__('Mark as Ordered')) }}, {{ Js::from(__('Are you sure you want to mark this purchase as ordered?')) }}, {{ Js::from(__('Mark as Ordered')) }}, '!bg-sky-600 hover:!bg-sky-700 focus:!ring-sky-500')"
                     >
                         {{ __('Mark as Ordered') }}
                     </x-primary-button>
@@ -204,7 +206,7 @@
                     <x-secondary-button
                         type="button"
                         class="text-red-600 hover:bg-red-50 border-red-200"
-                        @click="confirmAction('{{ route('purchases.cancel', $purchase) }}', 'PATCH', 'Cancel Order', 'Are you sure you want to cancel this order?', 'Cancel Order', '!bg-red-600 hover:!bg-red-700 focus:!ring-red-500')"
+                        @click="confirmAction('{{ route('purchases.cancel', $purchase) }}', 'PATCH', {{ Js::from(__('Cancel Order')) }}, {{ Js::from(__('Are you sure you want to cancel this order?')) }}, {{ Js::from(__('Cancel Order')) }}, '!bg-red-600 hover:!bg-red-700 focus:!ring-red-500')"
                     >
                         {{ __('Cancel Order') }}
                     </x-secondary-button>
@@ -228,7 +230,7 @@
                                  class="relative bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
 
                                 <h3 class="text-lg font-medium text-gray-900 mb-4">
-                                    Receive Purchase #{{ $purchase->invoice_number ?? $purchase->id }}
+                                    {{ __('Receive Purchase') }} #{{ $purchase->invoice_number ?? $purchase->id }}
                                 </h3>
 
                                 <form
@@ -245,7 +247,7 @@
                                         <!-- Invoice Section -->
                                         @if($purchase->invoice_number)
                                             <div class="bg-gray-50 p-3 rounded-md border border-gray-200">
-                                                <span class="block text-xs font-medium text-gray-500 uppercase">Invoice Number</span>
+                                                <span class="block text-xs font-medium text-gray-500 uppercase">{{ __('Invoice Number') }}</span>
                                                 <span class="text-sm font-semibold text-gray-900">{{ $purchase->invoice_number }}</span>
                                             </div>
                                         @else
@@ -265,10 +267,10 @@
                                         <!-- Proof Section -->
                                         @if($purchase->proof_image)
                                             <div class="bg-gray-50 p-3 rounded-md border border-gray-200">
-                                                <span class="block text-xs font-medium text-gray-500 uppercase mb-1">Proof of Receipt</span>
+                                                <span class="block text-xs font-medium text-gray-500 uppercase mb-1">{{ __('Proof of Receipt') }}</span>
                                                 <a href="{{ Storage::url($purchase->proof_image) }}" target="_blank" class="text-indigo-600 hover:underline text-sm flex items-center gap-1">
                                                     <x-heroicon-o-paper-clip class="w-4 h-4" />
-                                                    View Uploaded Image
+                                                    {{ __('View Uploaded Image') }}
                                                 </a>
                                             </div>
                                         @else
@@ -287,7 +289,7 @@
                                                         file:bg-indigo-50 file:text-indigo-700
                                                         hover:file:bg-indigo-100"
                                                 />
-                                                <p class="text-xs text-gray-500">Image (JPG, PNG) max 2MB.</p>
+                                                <p class="text-xs text-gray-500">{{ __('Image (JPG, PNG) max 2MB.') }}</p>
                                                 <x-input-error :messages="$errors->get('proof_image')" class="mt-2" />
                                             </div>
                                         @endif
@@ -295,14 +297,14 @@
                                         @if($purchase->invoice_number && $purchase->proof_image)
                                             <p class="text-xs text-green-600 mt-3 font-medium flex items-center">
                                                 <x-heroicon-o-check-circle class="w-4 h-4 mr-1" />
-                                                Data complete. Ready to receive.
+                                                {{ __('Data complete. Ready to receive.') }}
                                             </p>
                                         @endif
                                     </div>
 
                                     <div class="mt-6 flex justify-end gap-3">
                                         <x-secondary-button type="button" @click="open = false" x-bind:disabled="submitting">
-                                            Cancel
+                                            {{ __('Cancel') }}
                                         </x-secondary-button>
                                         <x-primary-button
                                             class="!bg-green-600 hover:!bg-green-700 focus:!ring-green-500"
@@ -327,7 +329,7 @@
                     <x-primary-button
                         type="button"
                         class="!bg-emerald-600 hover:!bg-emerald-700 focus:!ring-emerald-500"
-                        @click="confirmAction('{{ route('purchases.mark-paid', $purchase) }}', 'PATCH', 'Mark as Paid', 'Are you sure you want to mark this purchase as paid? This assumes the full amount has been paid.', 'Mark as Paid', '!bg-emerald-600 hover:!bg-emerald-700 focus:!ring-emerald-500')"
+                        @click="confirmAction('{{ route('purchases.mark-paid', $purchase) }}', 'PATCH', {{ Js::from(__('Mark as Paid')) }}, {{ Js::from(__('Are you sure you want to mark this purchase as paid? This assumes the full amount has been paid.')) }}, {{ Js::from(__('Mark as Paid')) }}, '!bg-emerald-600 hover:!bg-emerald-700 focus:!ring-emerald-500')"
                     >
                         <x-heroicon-o-currency-dollar class="w-5 h-5 mr-1" />
                         {{ __('Mark as Paid') }}
@@ -338,7 +340,7 @@
                     {{-- Restore Action --}}
                     <x-secondary-button
                         type="button"
-                        @click="confirmAction('{{ route('purchases.restore-draft', $purchase) }}', 'PATCH', 'Restore to Draft', 'Restore this purchase to Draft status? You can edit it again.', 'Restore to Draft', '!bg-gray-800 hover:!bg-gray-700 text-white')"
+                        @click="confirmAction('{{ route('purchases.restore-draft', $purchase) }}', 'PATCH', {{ Js::from(__('Restore to Draft')) }}, {{ Js::from(__('Restore this purchase to Draft status? You can edit it again.')) }}, {{ Js::from(__('Restore to Draft')) }}, '!bg-gray-800 hover:!bg-gray-700 text-white')"
                     >
                         {{ __('Restore to Draft') }}
                     </x-secondary-button>

@@ -3,10 +3,10 @@
         <!-- Custom Header -->
         <div class="mb-6 space-y-1.5 text-center sm:text-left border-b border-gray-200 pb-4">
             <h3 class="text-lg font-semibold leading-none tracking-tight text-foreground">
-                {{ $isEditing ? 'Edit Finance Category' : 'Create Finance Category' }}
+                {{ $isEditing ? __('Edit Finance Category') : __('Create Finance Category') }}
             </h3>
             <p class="text-sm text-muted-foreground">
-                {{ $isEditing ? 'Make changes to your category here. Click save when you\'re done.' : 'Add a new category to your finance records.' }}
+                {{ $isEditing ? __('Make changes to your category here. Click save when you\'re done.') : __('Add a new category to your finance records.') }}
             </p>
         </div>
 
@@ -14,10 +14,10 @@
             <!-- Name -->
             <x-form-input
                 name="name"
-                label="Name"
+                :label="__('Name')"
                 type="text"
                 wire:model="name"
-                placeholder="e.g. Electricity, Employee Salary, Asset Sales"
+                :placeholder="__('e.g. Electricity, Employee Salary, Asset Sales')"
                 required
             />
 
@@ -29,7 +29,7 @@
                         <input type="radio" name="type" value="income" wire:model="type" class="peer sr-only">
                         <div class="relative flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-4 py-2.5 text-center transition-all hover:bg-accent hover:text-accent-foreground peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 peer-checked:ring-1 peer-checked:ring-emerald-500">
                             <x-heroicon-s-arrow-trending-up class="h-4 w-4" />
-                            <span class="text-sm font-medium">Income</span>
+                            <span class="text-sm font-medium">{{ __('Income') }}</span>
                         </div>
                     </label>
 
@@ -38,7 +38,7 @@
                         <input type="radio" name="type" value="expense" wire:model="type" class="peer sr-only">
                         <div class="relative flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-4 py-2.5 text-center transition-all hover:bg-accent hover:text-accent-foreground peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-700 peer-checked:ring-1 peer-checked:ring-red-500">
                              <x-heroicon-s-arrow-trending-down class="h-4 w-4" />
-                            <span class="text-sm font-medium">Expense</span>
+                            <span class="text-sm font-medium">{{ __('Expense') }}</span>
                         </div>
                     </label>
                 </div>
@@ -53,7 +53,7 @@
                     wire:model="description"
                     rows="3"
                     class="block w-full rounded-md border-input bg-background shadow-sm focus:border-ring focus:ring-ring sm:text-sm"
-                    placeholder="Optional description..."
+                    placeholder="{{ __('Optional description...') }}"
                 ></textarea>
                 <x-input-error :messages="$errors->get('description')" />
             </div>

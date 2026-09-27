@@ -43,7 +43,7 @@ class SalesController extends Controller
             }
 
             return redirect()->route('sales.create')
-                ->with('success', 'Sale created successfully.');
+                ->with('success', __('Sale created successfully.'));
 
         } catch (SaleException $e) {
             if ($request->wantsJson()) {
@@ -70,7 +70,7 @@ class SalesController extends Controller
         try {
             $reason = $request->input('reason');
             $saleService->cancelSale($sale, $reason);
-            return redirect()->route('sales.index')->with('success', 'Sale cancelled successfully.');
+            return redirect()->route('sales.index')->with('success', __('Sale cancelled successfully.'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -86,7 +86,7 @@ class SalesController extends Controller
     {
         try {
             $saleService->restoreSale($sale);
-            return redirect()->back()->with('success', 'Sale restored to Pending.');
+            return redirect()->back()->with('success', __('Sale restored to Pending.'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -99,7 +99,7 @@ class SalesController extends Controller
 
             $saleService->completeSale($sale, $paymentData);
 
-            return redirect()->back()->with('success', 'Sale marked as completed.');
+            return redirect()->back()->with('success', __('Sale marked as completed.'));
 
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());

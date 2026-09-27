@@ -35,28 +35,28 @@
                     <!-- Content Grid -->
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <!-- Customer -->
-                        <x-detail-item label="Customer" :value="$sale->customer->name ?? 'Guest'">
+                        <x-detail-item :label="__('Customer')" :value="$sale->customer->name ?? __('Guest')">
                             <x-heroicon-o-user class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Invoice -->
-                        <x-detail-item label="Invoice Number" :value="$sale->invoice_number ?? '-'">
+                        <x-detail-item :label="__('Invoice Number')" :value="$sale->invoice_number ?? '-'">
                             <x-heroicon-o-document-text class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Sale Date -->
-                        <x-detail-item label="Sale Date" :value="$sale->sale_date->format('d M Y')">
+                        <x-detail-item :label="__('Sale Date')" :value="$sale->sale_date->locale(app()->getLocale())->translatedFormat('d M Y')">
                             <x-heroicon-o-calendar class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Payment Method -->
-                        <x-detail-item label="Payment Method" :value="$sale->payment_method->label()">
+                        <x-detail-item :label="__('Payment Method')" :value="$sale->payment_method->label()">
                             <x-heroicon-o-credit-card class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
 
                         <!-- Status -->
                         <div>
-                            <label class="text-sm font-medium leading-none text-gray-500">Status</label>
+                            <label class="text-sm font-medium leading-none text-gray-500">{{ __('Status') }}</label>
                             <div class="mt-1">
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $sale->status->color() }}">
                                     {{ $sale->status->label() }}
@@ -67,7 +67,7 @@
 
 
                         <!-- Created By -->
-                        <x-detail-item label="Created By" :value="$sale->creator->name ?? 'Unknown'">
+                        <x-detail-item :label="__('Created By')" :value="$sale->creator->name ?? __('Unknown')">
                             <x-heroicon-o-user class="w-4 h-4 text-gray-400" />
                         </x-detail-item>
                     </div>
@@ -76,10 +76,10 @@
                     <div class="mt-6 pt-6 border-t border-gray-100">
                         <div class="space-y-1">
                             <label class="text-sm font-medium leading-none text-gray-500">
-                                Notes
+                                {{ __('Notes') }}
                             </label>
                             <div class="bg-gray-50 p-3 rounded-md border border-gray-100">
-                                <p class="text-sm text-slate-700 italic leading-relaxed">{{ $sale->notes ?: 'No additional notes.' }}</p>
+                                <p class="text-sm text-slate-700 italic leading-relaxed">{{ $sale->notes ?: __('No additional notes.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -89,13 +89,13 @@
                         <table class="w-full text-sm text-left">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3">Code</th>
-                                    <th class="px-6 py-3">Product</th>
-                                    <th class="px-6 py-3">Unit</th>
-                                    <th class="px-6 py-3 text-center">Qty</th>
-                                    <th class="px-6 py-3 text-right">Price</th>
-                                    <th class="px-6 py-3 text-right">Discount</th>
-                                    <th class="px-6 py-3 text-right">Subtotal</th>
+                                    <th class="px-6 py-3">{{ __('Code') }}</th>
+                                    <th class="px-6 py-3">{{ __('Product') }}</th>
+                                    <th class="px-6 py-3">{{ __('Unit') }}</th>
+                                    <th class="px-6 py-3 text-center">{{ __('Qty') }}</th>
+                                    <th class="px-6 py-3 text-right">{{ __('Price') }}</th>
+                                    <th class="px-6 py-3 text-right">{{ __('Discount') }}</th>
+                                    <th class="px-6 py-3 text-right">{{ __('Subtotal') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -127,14 +127,14 @@
                             </tbody>
                             <tfoot class="bg-gray-50 font-bold">
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 text-right">Subtotal</td>
+                                    <td colspan="6" class="px-6 py-4 text-right">{{ __('Subtotal') }}</td>
                                     <td class="px-6 py-4 text-right text-gray-700">
                                         @money($sale->subtotal)
                                     </td>
                                 </tr>
                                 @if($sale->total_discount > 0)
                                     <tr>
-                                        <td colspan="6" class="px-6 py-4 text-right text-red-600">Total Discount (Items)</td>
+                                        <td colspan="6" class="px-6 py-4 text-right text-red-600">{{ __('Total Discount (Items)') }}</td>
                                         <td class="px-6 py-4 text-right text-red-600">
                                             - @money($sale->total_discount - $sale->global_discount)
                                         </td>
@@ -142,26 +142,26 @@
                                 @endif
                                 @if($sale->global_discount > 0)
                                     <tr>
-                                        <td colspan="6" class="px-6 py-4 text-right text-red-600">Global Discount (Transaction)</td>
+                                        <td colspan="6" class="px-6 py-4 text-right text-red-600">{{ __('Global Discount (Transaction)') }}</td>
                                         <td class="px-6 py-4 text-right text-red-600">
                                             - @money($sale->global_discount)
                                         </td>
                                     </tr>
                                 @endif
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 text-right">Total</td>
+                                    <td colspan="6" class="px-6 py-4 text-right">{{ __('Total') }}</td>
                                     <td class="px-6 py-4 text-right text-indigo-600 text-lg">
                                         @money($sale->total)
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 text-right text-gray-600">Cash Received</td>
+                                    <td colspan="6" class="px-6 py-4 text-right text-gray-600">{{ __('Cash Received') }}</td>
                                     <td class="px-6 py-4 text-right text-gray-800">
                                         @money($sale->cash_received)
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 text-right text-gray-600">Change</td>
+                                    <td colspan="6" class="px-6 py-4 text-right text-gray-600">{{ __('Change') }}</td>
                                     <td class="px-6 py-4 text-right text-green-600">
                                         @money($sale->change)
                                     </td>
@@ -196,7 +196,7 @@
                     {{-- Complete / Pay Action --}}
                     <x-primary-button
                         class="!bg-green-600 hover:!bg-green-700 focus:!ring-green-500"
-                        @click="confirmAction('{{ route('sales.complete', $sale) }}', 'PATCH', 'Complete Sale', 'Mark this sale as Completed? This confirms payment has been received.', 'Complete Sale', '!bg-green-600 hover:!bg-green-700 focus:!ring-green-500')"
+                        @click="confirmAction('{{ route('sales.complete', $sale) }}', 'PATCH', {{ Js::from(__('Complete Sale')) }}, {{ Js::from(__('Mark this sale as Completed? This confirms payment has been received.')) }}, {{ Js::from(__('Complete Sale')) }}, '!bg-green-600 hover:!bg-green-700 focus:!ring-green-500')"
                     >
                         {{ __('Complete Sale') }}
                     </x-primary-button>
@@ -235,7 +235,7 @@
                                             id="reason"
                                             rows="3"
                                             class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                            placeholder="Customer changed mind..."
+                                            placeholder="{{ __('Customer changed mind...') }}"
                                             required
                                         ></textarea>
                                     </div>
@@ -258,7 +258,7 @@
                     {{-- Cancel Action --}}
                     <x-secondary-button
                         class="text-red-600 hover:bg-red-50 border-red-200"
-                        @click="confirmAction('{{ route('sales.destroy', $sale) }}', 'DELETE', 'Cancel Sale', 'Are you sure you want to cancel (VOID) this sale? Stocks will be returned.', 'Yes, Cancel Sale', '!bg-red-600 hover:!bg-red-700 focus:!ring-red-500')"
+                        @click="confirmAction('{{ route('sales.destroy', $sale) }}', 'DELETE', {{ Js::from(__('Cancel Sale')) }}, {{ Js::from(__('Are you sure you want to cancel (VOID) this sale? Stocks will be returned.')) }}, {{ Js::from(__('Yes, Cancel Sale')) }}, '!bg-red-600 hover:!bg-red-700 focus:!ring-red-500')"
                     >
                         {{ __('Cancel Sale') }}
                     </x-secondary-button>
@@ -268,7 +268,7 @@
                     {{-- Restore Action --}}
                     <x-secondary-button
                         class="bg-gray-800 text-white hover:bg-gray-700 focus:ring-gray-500"
-                        @click="confirmAction('{{ route('sales.restore', $sale) }}', 'PATCH', 'Restore Sale', 'Restore this sale to Pending status? You can then complete it again.', 'Restore to Pending', '!bg-gray-800 hover:!bg-gray-700 text-white')"
+                        @click="confirmAction('{{ route('sales.restore', $sale) }}', 'PATCH', {{ Js::from(__('Restore Sale')) }}, {{ Js::from(__('Restore this sale to Pending status? You can then complete it again.')) }}, {{ Js::from(__('Restore to Pending')) }}, '!bg-gray-800 hover:!bg-gray-700 text-white')"
                     >
                         {{ __('Restore to Pending') }}
                     </x-secondary-button>

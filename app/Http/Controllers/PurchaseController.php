@@ -51,12 +51,12 @@ class PurchaseController extends Controller
             $purchase = $this->service->createPurchase($purchaseData, Auth::id());
 
             return redirect()->route('purchases.show', $purchase)
-                ->with('success', 'Purchase created successfully.');
+                ->with('success', __('Purchase created successfully.'));
 
         } catch (PurchaseException $e) {
             return back()->withInput()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error creating purchase: ' . $e->getMessage());
+            return back()->withInput()->with('error', __('Error creating purchase: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -98,12 +98,12 @@ class PurchaseController extends Controller
             $this->service->updatePurchase($purchase, $purchaseData);
 
             return redirect()->route('purchases.show', $purchase)
-                ->with('success', 'Purchase updated successfully.');
+                ->with('success', __('Purchase updated successfully.'));
 
         } catch (PurchaseException $e) {
             return back()->withInput()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error updating purchase: ' . $e->getMessage());
+            return back()->withInput()->with('error', __('Error updating purchase: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -111,11 +111,11 @@ class PurchaseController extends Controller
     {
         try {
             $this->service->deletePurchase($purchase);
-            return redirect()->route('purchases.index')->with('success', 'Purchase deleted successfully.');
+            return redirect()->route('purchases.index')->with('success', __('Purchase deleted successfully.'));
         } catch (PurchaseException $e) {
             return back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            return back()->with('error', 'Error deleting purchase: ' . $e->getMessage());
+            return back()->with('error', __('Error deleting purchase: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -123,11 +123,11 @@ class PurchaseController extends Controller
     {
         try {
             $this->service->markAsOrdered($purchase);
-            return back()->with('success', 'Purchase marked as ordered.');
+            return back()->with('success', __('Purchase marked as ordered.'));
         } catch (PurchaseException $e) {
             return back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            return back()->with('error', 'Error marking as ordered: ' . $e->getMessage());
+            return back()->with('error', __('Error marking as ordered: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -165,12 +165,12 @@ class PurchaseController extends Controller
 
             $this->service->markAsReceived($purchase);
 
-            return back()->with('success', 'Purchase received and stock updated.');
+            return back()->with('success', __('Purchase received and stock updated.'));
 
         } catch (PurchaseException $e) {
             return back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            return back()->with('error', 'Error receiving purchase: ' . $e->getMessage());
+            return back()->with('error', __('Error receiving purchase: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -178,11 +178,11 @@ class PurchaseController extends Controller
     {
         try {
             $this->service->cancelPurchase($purchase);
-            return back()->with('success', 'Purchase order cancelled.');
+            return back()->with('success', __('Purchase order cancelled.'));
         } catch (PurchaseException $e) {
             return back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            return back()->with('error', 'Error cancelling purchase: ' . $e->getMessage());
+            return back()->with('error', __('Error cancelling purchase: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -190,11 +190,11 @@ class PurchaseController extends Controller
     {
         try {
             $this->service->markAsPaid($purchase);
-            return back()->with('success', 'Purchase marked as paid.');
+            return back()->with('success', __('Purchase marked as paid.'));
         } catch (PurchaseException $e) {
             return back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            return back()->with('error', 'Error marking as paid: ' . $e->getMessage());
+            return back()->with('error', __('Error marking as paid: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -202,11 +202,11 @@ class PurchaseController extends Controller
     {
         try {
             $this->service->restoreToDraft($purchase);
-            return back()->with('success', 'Purchase restored to draft.');
+            return back()->with('success', __('Purchase restored to draft.'));
         } catch (PurchaseException $e) {
             return back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            return back()->with('error', 'Error restoring purchase: ' . $e->getMessage());
+            return back()->with('error', __('Error restoring purchase: :message', ['message' => $e->getMessage()]));
         }
     }
 }

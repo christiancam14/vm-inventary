@@ -12,11 +12,10 @@
 
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <form action="{{ route('purchases.store') }}" method="POST" enctype="multipart/form-data"
+            <form action="{{ route('purchases.store') }}" method="POST"
                     x-data="purchaseForm({
-                        items: {{ Js::from(old('items', [])) }},
                         supplier_id: {{ Js::from(old('supplier_id')) }},
-                        status: {{ Js::from(old('status', 'draft')) }},
+                        total: {{ Js::from(old('total')) }},
                         errors: {{ Js::from($errors->any() ? $errors->toArray() : []) }}
                     })"
                     @submit.prevent="submitForm">

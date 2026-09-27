@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Arus Kas - {{ $storeName }}</title>
+    <title>{{ __('Cash Flow Report') }} - {{ $storeName }}</title>
     <style>
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #333; margin: 0; padding: 40px; }
         .header-container { border-bottom: 2px solid #444; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-start; }
@@ -59,7 +59,7 @@
 <body>
 
     <div class="no-print" style="text-align: right; margin-bottom: 20px;">
-        <button onclick="window.print()" class="btn-print">🖨️ Print Report</button>
+        <button onclick="window.print()" class="btn-print">{{ __('Print Report') }}</button>
     </div>
 
     <div class="header-container">
@@ -67,43 +67,43 @@
             <h1>{{ $storeName }}</h1>
             <p>{{ $storeAddress }}</p>
             @if($storePhone !== '-')
-                <p>Telp: {{ $storePhone }}</p>
+                <p>{{ __('Phone') }}: {{ $storePhone }}</p>
             @endif
         </div>
         <div class="report-meta">
-            <div class="report-title">Cash Flow Report</div>
+            <div class="report-title">{{ __('Cash Flow Report') }}</div>
             <div class="meta-item">
-                Period: {{ $periodText }}
+                {{ __('Period') }}: {{ $periodText }}
             </div>
             <div class="meta-item">
-                Printed: {{ now()->setTimezone('Asia/Jakarta')->translatedFormat('d F Y, H:i') }}
+                {{ __('Printed') }}: {{ now()->timezone(config('app.timezone'))->translatedFormat('d F Y, H:i') }}
             </div>
-            <div class="meta-item">By: {{ auth()->user()->name ?? 'Admin' }}</div>
+            <div class="meta-item">{{ __('By') }}: {{ auth()->user()->name ?? __('Store Owner') }}</div>
         </div>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th width="5%" class="text-center">No</th>
-                <th width="12%">Date</th>
-                <th width="10%">Type</th>
-                <th width="18%">Category</th>
-                <th width="40%">Description</th>
-                <th width="15%" class="text-right">Amount</th>
+                <th width="5%" class="text-center">{{ __('No') }}</th>
+                <th width="12%">{{ __('Date') }}</th>
+                <th width="10%">{{ __('Type') }}</th>
+                <th width="18%">{{ __('Category') }}</th>
+                <th width="40%">{{ __('Description') }}</th>
+                <th width="15%" class="text-right">{{ __('Amount') }}</th>
             </tr>
         </thead>
         <tbody>
             @forelse($cashFlows as $index => $cf)
                 <tr>
                     <td class="text-center">{{ $index + 1 }}</td>
-                    <td>{{ $cf->transaction_date->format('d M Y') }}</td>
+                    <td>{{ $cf->transaction_date->translatedFormat('d M Y') }}</td>
 
                     <td>
                         @if($cf->category->type === \App\Enums\FinanceCategoryType::Income)
-                            <span class="badge badge-income">INCOME</span>
+                            <span class="badge badge-income">{{ __('Income') }}</span>
                         @else
-                            <span class="badge badge-expense">EXPENSE</span>
+                            <span class="badge badge-expense">{{ __('Expense') }}</span>
                         @endif
                     </td>
 
@@ -115,11 +115,11 @@
                         {{ $cf->description }}
                         @if($cf->external_reference)
                             <div style="font-size: 10px; color: #888; margin-top: 2px;">
-                                Ref: {{ $cf->external_reference }}
+                                {{ __('Reference') }}: {{ $cf->external_reference }}
                             </div>
                         @else
                              <div style="font-size: 10px; color: #aaa; margin-top: 2px;">
-                                Ref: {{ $cf->code }}
+                                {{ __('Reference') }}: {{ $cf->code }}
                             </div>
                         @endif
                     </td>
@@ -131,7 +131,7 @@
             @empty
                 <tr>
                     <td colspan="6" class="text-center" style="padding: 30px; color: #888;">
-                        No transactions selected.
+                        {{ __('No transactions selected.') }}
                     </td>
                 </tr>
             @endforelse
@@ -141,39 +141,39 @@
     <div class="summary-section">
         <table class="summary-table">
             <tr>
-                <td class="text-right" style="color: #666;">Opening Balance ({{ \Carbon\Carbon::parse($openingBalanceDate)->format('d M Y') }})</td>
-                <td class="text-right">{{ number_format($openingBalanceAmount, 0, ',', '.') }}</td>
+                <td class="text-right" style="color: #666;">{{ __('Opening Balance') }} ({{ \Carbon\Carbon::parse($openingBalanceDate)->translatedFormat('d M Y') }})</td>
+                <td class="text-right">{{ format_money($openingBalanceAmount) }}</td>
             </tr>
             <tr>
-                <td class="text-right" style="color: #666;">Total Income</td>
-                <td class="text-right" style="color: #065f46;">+ {{ number_format($totalIncome, 0, ',', '.') }}</td>
+                <td class="text-right" style="color: #666;">{{ __('Total Income') }}</td>
+                <td class="text-right" style="color: #065f46;">+ {{ format_money($totalIncome) }}</td>
             </tr>
             <tr>
-                <td class="text-right" style="color: #666;">Total Expense</td>
-                <td class="text-right" style="color: #991b1b;">- {{ number_format($totalExpense, 0, ',', '.') }}</td>
+                <td class="text-right" style="color: #666;">{{ __('Total Expense') }}</td>
+                <td class="text-right" style="color: #991b1b;">- {{ format_money($totalExpense) }}</td>
             </tr>
             <tr class="summary-row-total">
-                <td class="text-right">Estimated Final Balance</td>
-                <td class="text-right">Rp {{ number_format($estimatedFinalBalance, 0, ',', '.') }}</td>
+                <td class="text-right">{{ __('Estimated Final Balance') }}</td>
+                <td class="text-right">{{ format_money($estimatedFinalBalance) }}</td>
             </tr>
         </table>
     </div>
 
     <div class="signature-area">
         <div class="signature-box">
-            <div>Created By</div>
+            <div>{{ __('Created By') }}</div>
             <div class="signature-line"></div>
-            <div style="font-size: 10px; color: #666; margin-top: 5px;">(Finance Admin)</div>
+            <div style="font-size: 10px; color: #666; margin-top: 5px;">({{ __('Finance Admin') }})</div>
         </div>
         <div class="signature-box">
-            <div>Checked By</div>
+            <div>{{ __('Checked By') }}</div>
             <div class="signature-line"></div>
-            <div style="font-size: 10px; color: #666; margin-top: 5px;">(Ops Manager)</div>
+            <div style="font-size: 10px; color: #666; margin-top: 5px;">({{ __('Ops Manager') }})</div>
         </div>
         <div class="signature-box">
-            <div>Approved By</div>
+            <div>{{ __('Approved By') }}</div>
             <div class="signature-line"></div>
-            <div style="font-size: 10px; color: #666; margin-top: 5px;">(Store Owner)</div>
+            <div style="font-size: 10px; color: #666; margin-top: 5px;">({{ __('Store Owner') }})</div>
         </div>
     </div>
 

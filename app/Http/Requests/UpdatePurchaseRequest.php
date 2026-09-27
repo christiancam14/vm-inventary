@@ -25,21 +25,15 @@ class UpdatePurchaseRequest extends FormRequest
             'purchase_date' => ['required', 'date'],
             'due_date' => ['nullable', 'date', 'after_or_equal:purchase_date'],
             'notes' => ['nullable', 'string'],
-            // 'status' is preserved from existing record
-            'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => ['required', 'exists:products,id'],
-            'items.*.quantity' => ['required', 'integer', 'min:1'],
-            'items.*.unit_price' => ['required', 'numeric', 'min:0'],
-            'items.*.selling_price' => ['nullable', 'numeric', 'min:0'],
+            'total' => ['required', 'numeric', 'min:1'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'items.required' => 'Please add at least one item.',
-            'items.*.product_id.required' => 'Product is required.',
-            'items.*.quantity.min' => 'Quantity must be at least 1.',
+            'total.required' => __('The purchase amount is required.'),
+            'total.min' => __('The purchase amount must be greater than zero.'),
         ];
     }
 }

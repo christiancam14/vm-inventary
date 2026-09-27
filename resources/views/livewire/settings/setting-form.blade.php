@@ -18,9 +18,9 @@
                         class="block w-full"
                         type="text"
                         wire:model="key"
-                        placeholder="e.g. currency_symbol"
+                        placeholder="{{ __('e.g. currency_symbol') }}"
                     />
-                    <p class="text-xs text-muted-foreground">Use snake_case (lowercase, underscores).</p>
+                    <p class="text-xs text-muted-foreground">{{ __('Use snake_case (lowercase, underscores).') }}</p>
                     <x-input-error :messages="$errors->get('key')" />
                 @else
                     <div class="px-3 py-2 text-sm font-medium border rounded-md border-input bg-muted/50 text-foreground">
@@ -34,8 +34,8 @@
 
                 @if(!$isCreating && $key === 'currency_position')
                     <select id="value" wire:model="value" class="block w-full rounded-md border-input bg-background shadow-sm focus:border-ring focus:ring-ring sm:text-sm">
-                        <option value="left">Left (Example: $ 10.00)</option>
-                        <option value="right">Right (Example: 10.00 $)</option>
+                        <option value="left">{{ __('Left (Example: $ 10.00)') }}</option>
+                        <option value="right">{{ __('Right (Example: 10.00 $)') }}</option>
                     </select>
                 @elseif(!$isCreating && $key === 'currency_fraction_digits')
                     <input
@@ -45,14 +45,14 @@
                         min="0"
                         max="4"
                         class="block w-full rounded-md border-input bg-background shadow-sm focus:border-ring focus:ring-ring sm:text-sm"
-                        placeholder="0 for IDR, 2 for USD"
+                        placeholder="{{ __('0 for IDR, 2 for USD') }}"
                     >
                 @elseif(!$isCreating && in_array($key, ['currency_thousand_separator', 'currency_decimal_separator']))
                     <select id="value" wire:model="value" class="block w-full rounded-md border-input bg-background shadow-sm focus:border-ring focus:ring-ring sm:text-sm">
-                        <option value=".">Dot (.)</option>
-                        <option value=",">Comma (,)</option>
-                        <option value=" ">Space ( )</option>
-                        <option value="">None</option>
+                        <option value=".">{{ __('Dot (.)') }}</option>
+                        <option value=",">{{ __('Comma (,)') }}</option>
+                        <option value=" ">{{ __('Space ( )') }}</option>
+                        <option value="">{{ __('None') }}</option>
                     </select>
                 @elseif(!$isCreating && in_array($key, ['store_address']))
                     <textarea
@@ -60,7 +60,7 @@
                         wire:model="value"
                         rows="4"
                         class="block w-full rounded-md border-input bg-background shadow-sm focus:border-ring focus:ring-ring sm:text-sm"
-                        placeholder="Enter value..."
+                        placeholder="{{ __('Enter value...') }}"
                     ></textarea>
                 @else
                     <input
@@ -68,7 +68,7 @@
                         id="value"
                         wire:model="value"
                         class="block w-full rounded-md border-input bg-background shadow-sm focus:border-ring focus:ring-ring sm:text-sm"
-                        placeholder="Enter value..."
+                        placeholder="{{ __('Enter value...') }}"
                     >
                 @endif
                 <x-input-error :messages="$errors->get('value')" />

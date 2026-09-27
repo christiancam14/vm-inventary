@@ -34,10 +34,12 @@ class PurchaseService
                     'notes' => $data->notes,
                     'proof_image' => $data->proof_image,
                     'created_by'     => $userId,
-                    'total'          => 0,
+                    'total'          => $data->total,
                 ]);
 
-                $this->syncItems($purchase, $data->items);
+                if ($data->items !== []) {
+                    $this->syncItems($purchase, $data->items);
+                }
 
                 return $purchase;
 
@@ -62,11 +64,13 @@ class PurchaseService
                     'due_date' => $data->due_date,
                     'notes' => $data->notes,
                     'proof_image' => $data->proof_image,
+                    'total' => $data->total,
                 ]);
 
-                // Full sync of items
                 $purchase->items()->delete();
-                $this->syncItems($purchase, $data->items);
+                if ($data->items !== []) {
+                    $this->syncItems($purchase, $data->items);
+                }
 
                 return $purchase->refresh();
 
@@ -107,10 +111,6 @@ class PurchaseService
         DB::transaction(function () use ($purchase) {
             if ($purchase->status !== PurchaseStatus::DRAFT) {
                 throw PurchaseException::invalidStatus('order', $purchase->status->label(), ['id' => $purchase->id]);
-            }
-
-            if ($purchase->items()->count() === 0) {
-                throw PurchaseException::updateFailed("Cannot order a purchase with no items.", ['id' => $purchase->id]);
             }
 
             $purchase->update(['status' => PurchaseStatus::ORDERED]);

@@ -80,22 +80,22 @@ class FinanceReportController extends Controller
             $now = Carbon::now();
             switch ($periodKey) {
                 case 'today':
-                    $periodText = 'Today (' . $now->translatedFormat('d F Y') . ')';
+                    $periodText = __('Today').' ('.$now->translatedFormat('d F Y').')';
                     break;
                 case 'yesterday':
-                    $periodText = 'Yesterday (' . $now->subDay()->translatedFormat('d F Y') . ')';
+                    $periodText = __('Yesterday').' ('.$now->subDay()->translatedFormat('d F Y').')';
                     break;
                 case 'this_week':
-                    $periodText = 'This Week (' . $now->startOfWeek()->translatedFormat('d M') . ' - ' . $now->endOfWeek()->translatedFormat('d M Y') . ')';
+                    $periodText = __('This Week').' ('.$now->startOfWeek()->translatedFormat('d M').' - '.$now->endOfWeek()->translatedFormat('d M Y').')';
                     break;
                 case 'last_week':
-                    $periodText = 'Last Week (' . $now->subWeek()->startOfWeek()->translatedFormat('d M') . ' - ' . $now->subWeek()->endOfWeek()->translatedFormat('d M Y') . ')';
+                    $periodText = __('Last Week').' ('.$now->subWeek()->startOfWeek()->translatedFormat('d M').' - '.$now->subWeek()->endOfWeek()->translatedFormat('d M Y').')';
                     break;
                 case 'this_month':
-                    $periodText = 'This Month (' . $now->translatedFormat('F Y') . ')';
+                    $periodText = __('This Month').' ('.$now->translatedFormat('F Y').')';
                     break;
                 case 'last_month':
-                    $periodText = 'Last Month (' . $now->subMonth()->translatedFormat('F Y') . ')';
+                    $periodText = __('Last Month').' ('.$now->subMonth()->translatedFormat('F Y').')';
                     break;
             }
         }

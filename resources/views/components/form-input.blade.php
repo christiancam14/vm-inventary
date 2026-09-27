@@ -2,7 +2,7 @@
 
 <div class="space-y-2">
     @if($label)
-        <x-input-label :for="$name" :value="$label" :required="$required" />
+        <x-input-label :for="$name" :value="__($label)" :required="$required" />
     @endif
 
     <x-text-input

@@ -3,10 +3,10 @@
         <!-- Custom Header -->
         <div class="mb-6 space-y-1.5 text-center sm:text-left border-b border-gray-200 pb-4">
             <h3 class="text-lg font-semibold leading-none tracking-tight text-foreground">
-                {{ $isEditing ? 'Edit User' : 'Create User' }}
+                {{ $isEditing ? __('Edit User') : __('Create User') }}
             </h3>
             <p class="text-sm text-muted-foreground">
-                {{ $isEditing ? 'Update user information.' : 'Add a new user to the system.' }}
+                {{ $isEditing ? __('Update user information.') : __('Add a new user to the system.') }}
             </p>
         </div>
 
@@ -18,7 +18,7 @@
                 type="text"
                 wire:model="name"
                 required
-                placeholder="Full Name"
+                placeholder="{{ __('Full Name') }}"
             />
 
             <!-- Username -->
@@ -28,7 +28,7 @@
                 type="text"
                 wire:model="username"
                 required
-                placeholder="Unique username"
+                placeholder="{{ __('Unique username') }}"
             />
 
             <!-- Email -->
@@ -52,7 +52,7 @@
                         wire:model="password"
                         :required="!$isEditing"
                         autocomplete="new-password"
-                        placeholder="{{ $isEditing ? 'Leave blank to keep current' : 'Min 8 chars' }}"
+                        placeholder="{{ $isEditing ? __('Leave blank to keep current') : __('Min 8 chars') }}"
                     />
                     <x-input-error :messages="$errors->get('password')" />
                 </div>
