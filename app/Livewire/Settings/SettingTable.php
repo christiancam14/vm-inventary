@@ -39,7 +39,23 @@ final class SettingTable extends PowerGridComponent
     {
         return PowerGrid::fields()
             ->add('key')
-            ->add('key_label', fn (Setting $model) => Str::title(str_replace('_', ' ', $model->key)))
+            ->add('key_label', function (Setting $model) {
+                $labels = [
+                    'default_max_discount' => __('Default maximum discount'),
+                    'store_name' => __('Store name'),
+                    'store_address' => __('Store address'),
+                    'store_phone' => __('Store phone'),
+                    'opening_balance_date' => __('Opening balance date'),
+                    'opening_balance_amount' => __('Opening balance amount'),
+                    'currency_symbol' => __('Currency symbol'),
+                    'currency_position' => __('Currency position'),
+                    'currency_fraction_digits' => __('Currency fraction digits'),
+                    'currency_thousand_separator' => __('Thousand separator'),
+                    'currency_decimal_separator' => __('Decimal separator'),
+                ];
+
+                return $labels[$model->key] ?? Str::title(str_replace('_', ' ', $model->key));
+            })
             ->add('value')
             ->add('value_limited', fn (Setting $model) => Str::limit($model->value, 50));
     }

@@ -55,7 +55,20 @@ class SettingForm extends Component
         $this->isCreating = false;
         $this->key = $setting->key;
         $this->value = $setting->value;
-        $this->label = Str::title(str_replace('_', ' ', $setting->key));
+        $labels = [
+            'default_max_discount' => __('Default maximum discount'),
+            'store_name' => __('Store name'),
+            'store_address' => __('Store address'),
+            'store_phone' => __('Store phone'),
+            'opening_balance_date' => __('Opening balance date'),
+            'opening_balance_amount' => __('Opening balance amount'),
+            'currency_symbol' => __('Currency symbol'),
+            'currency_position' => __('Currency position'),
+            'currency_fraction_digits' => __('Currency fraction digits'),
+            'currency_thousand_separator' => __('Thousand separator'),
+            'currency_decimal_separator' => __('Decimal separator'),
+        ];
+        $this->label = $labels[$setting->key] ?? Str::title(str_replace('_', ' ', $setting->key));
 
         $this->dispatch('open-modal', name: 'setting-form-modal');
     }
@@ -74,6 +87,7 @@ class SettingForm extends Component
             'currency_fraction_digits' => '2',
             'currency_thousand_separator' => ',',
             'currency_decimal_separator' => '.',
+            'default_max_discount' => '10000',
         ];
 
         foreach ($defaults as $key => $value) {

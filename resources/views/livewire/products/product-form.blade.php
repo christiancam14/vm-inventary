@@ -112,6 +112,18 @@
                 </div>
             </div>
 
+            <div class="space-y-2 max-w-sm">
+                <x-input-label for="max_discount" :value="__('Maximum discount') . ' (' . \App\Models\Setting::get('currency_symbol', '$') . ')'" />
+                <x-currency-input
+                    id="max_discount"
+                    wire:model.live.debounce.500ms="max_discount"
+                    placeholder="0"
+                    required
+                />
+                <p class="text-xs text-muted-foreground">{{ __('The highest discount allowed per unit when this product is sold.') }}</p>
+                <x-input-error :messages="$errors->get('max_discount')" />
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 items-end">
                 <x-form-input
                     name="quantity"

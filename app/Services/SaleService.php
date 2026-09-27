@@ -90,8 +90,13 @@ class SaleService
                     $quantity = $itemData->quantity;
                     $discount = $itemData->discount;
 
-                    if ($discount > $unitPrice) {
-                        throw SaleException::invalidDiscount("Item discount (" . format_money($discount) . ") cannot exceed unit price (" . format_money($unitPrice) . ") for product '{$product->name}'.");
+                    $maxDiscount = min((float) $product->max_discount, (float) $unitPrice);
+
+                    if ($discount > $maxDiscount) {
+                        throw SaleException::invalidDiscount(__('The discount for :product cannot exceed :amount.', [
+                            'product' => $product->name,
+                            'amount' => format_money($maxDiscount),
+                        ]));
                     }
 
                     $finalPrice = $unitPrice - $discount;

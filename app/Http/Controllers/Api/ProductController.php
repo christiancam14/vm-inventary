@@ -13,7 +13,7 @@ class ProductController extends Controller
     {
         $query = $request->input('q') ?? $request->input('search');
 
-        $cacheKey = 'products_search_' . md5((string) $query);
+        $cacheKey = 'products_search_v2_' . md5((string) $query);
 
         $products = Cache::remember($cacheKey, 300, function () use ($query) {
             return Product::query()
@@ -69,6 +69,7 @@ class ProductController extends Controller
             'name' => $product->name,
             'price' => $product->purchase_price,
             'selling_price' => $product->selling_price,
+            'max_discount' => $product->max_discount,
             'sku' => $product->sku,
             'barcode' => $product->barcode,
             'quantity' => $product->quantity,

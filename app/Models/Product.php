@@ -19,6 +19,7 @@ class Product extends Model
         'name',
         'purchase_price',
         'selling_price',
+        'max_discount',
         'quantity',
         'min_stock',
         'is_active',
@@ -29,6 +30,7 @@ class Product extends Model
     protected $casts = [
         'purchase_price' => 'float',
         'selling_price' => 'float',
+        'max_discount' => 'float',
         'quantity' => 'integer',
         'min_stock' => 'integer',
         'is_active' => 'boolean',

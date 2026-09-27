@@ -589,5 +589,20 @@
     "This action cannot be undone. This will permanently delete your data.": "Esta acción no se puede deshacer. Se eliminarán los datos de forma permanente.",
     "Point of sale": "Punto de venta",
     "Account": "Cuenta",
-    "Open menu": "Abrir menú"
+    "Open menu": "Abrir menú",
+    "Maximum discount": "Descuento máximo",
+    "Default maximum discount": "Descuento máximo por defecto",
+    "The highest discount allowed per unit when this product is sold.": "El mayor descuento permitido por unidad al vender este producto.",
+    "The discount cannot exceed the maximum allowed for this product.": "El descuento no puede superar el máximo permitido para este producto.",
+    "The discount for :product cannot exceed :amount.": "El descuento de :product no puede superar :amount.",
+    "Store name": "Nombre de la tienda",
+    "Store address": "Dirección de la tienda",
+    "Store phone": "Teléfono de la tienda",
+    "Opening balance date": "Fecha del saldo inicial",
+    "Opening balance amount": "Monto del saldo inicial",
+    "Currency symbol": "Símbolo de moneda",
+    "Currency position": "Posición de la moneda",
+    "Currency fraction digits": "Decimales de la moneda",
+    "Thousand separator": "Separador de miles",
+    "Decimal separator": "Separador decimal"
 }

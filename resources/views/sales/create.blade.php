@@ -79,7 +79,7 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500" x-text="item.unit"></td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right">
+                                        <td class="px-6 py-4 text-right">
                                             <div class="relative rounded-md shadow-sm w-32 ml-auto">
                                         <div class="absolute inset-y-0 flex items-center pointer-events-none" :class="window.currencyPosition === 'left' ? 'left-0 pl-2' : 'right-0 pr-2'">
                                             <span class="text-gray-500 sm:text-xs" x-text="window.currencySymbol"></span>
@@ -87,12 +87,13 @@
                                         <input
                                             type="text"
                                             :value="formatNumber(item.discount)"
-                                            @input="item.discount = unformatNumber($event.target.value)"
+                                            @input="item.discount = unformatNumber($event.target.value); validateDiscount(index)"
                                             class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                                             :class="window.currencyPosition === 'left' ? 'pl-8 pr-2 text-right' : 'pr-8 pl-2 text-left'"
                                             placeholder="0"
                                         >
                                             </div>
+                                            <p class="text-[11px] text-gray-500 mt-1">{{ __('Max') }}: <span x-text="formatCurrency(discountCap(item))"></span></p>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900" x-text="formatCurrency((item.price - item.discount) * item.quantity)"></td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
@@ -321,6 +322,7 @@
                         lookupFailed: @json(__('Barcode lookup failed.')),
                         couldNotLookup: @json(__('Could not look up barcode.')),
                         maxStock: @json(__('Maximum stock reached')),
+                        maxDiscount: @json(__('The discount cannot exceed the maximum allowed for this product.')),
                         due: @json(__('Due')),
                         change: @json(__('Change')),
                         processing: @json(__('Processing...')),
@@ -578,6 +580,8 @@
                     addToCart(product) {
                         const existing = this.cart.find(item => item.id === product.id);
                         if (existing) {
+                            existing.max_discount = Number(product.max_discount ?? existing.max_discount ?? 0);
+                            this.validateDiscount(this.cart.indexOf(existing));
                             if (existing.quantity < product.quantity) {
                                 existing.quantity++;
                                 this.$dispatch('toast', { message: this.i18n.productExists, type: 'info' });
@@ -595,6 +599,7 @@
                                     quantity: 1,
                                     max_stock: product.quantity,
                                     unit: product.unit ? product.unit.symbol : '',
+                                    max_discount: Number(product.max_discount ?? 0),
                                     discount: 0
                                 });
                                 this.$dispatch('toast', { message: this.i18n.addedToCart, type: 'success' });
@@ -602,6 +607,26 @@
                                 this.$dispatch('toast', { message: this.i18n.outOfStock, type: 'error' });
                             }
                         }
+                    },
+
+                    discountCap(item) {
+                        const price = Number(item.price) || 0;
+                        const maxDiscount = item.max_discount === undefined || item.max_discount === null
+                            ? price
+                            : Number(item.max_discount);
+                        return Math.min(Math.max(maxDiscount, 0), price);
+                    },
+
+                    validateDiscount(index) {
+                        const item = this.cart[index];
+                        let discount = Number(item.discount) || 0;
+                        if (discount < 0) discount = 0;
+                        const cap = this.discountCap(item);
+                        if (discount > cap) {
+                            discount = cap;
+                            this.$dispatch('toast', { message: this.i18n.maxDiscount, type: 'warning' });
+                        }
+                        item.discount = discount;
                     },
 
                     validateQty(index) {
@@ -719,6 +744,7 @@
                     // Confirmation
                     openConfirmation() {
                         if (this.cart.length === 0) return;
+                        this.cart.forEach((_, index) => this.validateDiscount(index));
                         if (this.payment.method === 'cash' && this.payment.cash_received < this.total) {
                             this.$dispatch('toast', { message: this.i18n.insufficientPayment, type: 'error' });
                             return;

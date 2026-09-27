@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Unit;
 use Livewire\Attributes\On;
 use Illuminate\Validation\Rule;
+use App\Models\Setting;
 use App\Services\ProductService;
 use App\Exceptions\ProductException;
 
@@ -25,6 +26,7 @@ class ProductForm extends Component
     public ?int $unit_id = null;
     public float $purchase_price = 0;
     public float $selling_price = 0;
+    public float $max_discount = 0;
     public int $quantity = 0;
     public int $min_stock = 0;
     public bool $is_active = true;
@@ -48,8 +50,9 @@ class ProductForm extends Component
     #[On('create-product')]
     public function create(): void
     {
-        $this->reset(['sku', 'barcode', 'name', 'category_id', 'unit_id', 'purchase_price', 'selling_price', 'quantity', 'min_stock', 'description', 'notes', 'product', 'isEditing', 'categoryName', 'unitName']);
+        $this->reset(['sku', 'barcode', 'name', 'category_id', 'unit_id', 'purchase_price', 'selling_price', 'max_discount', 'quantity', 'min_stock', 'description', 'notes', 'product', 'isEditing', 'categoryName', 'unitName']);
         $this->is_active = true;
+        $this->max_discount = (float) Setting::get('default_max_discount', 10000);
 
         $this->dispatch('open-modal', name: 'product-form-modal');
     }
@@ -65,6 +68,7 @@ class ProductForm extends Component
         $this->unit_id = $product->unit_id;
         $this->purchase_price = $product->purchase_price;
         $this->selling_price = $product->selling_price;
+        $this->max_discount = $product->max_discount;
         $this->quantity = $product->quantity;
         $this->min_stock = $product->min_stock;
         $this->is_active = $product->is_active;
@@ -100,6 +104,7 @@ class ProductForm extends Component
             'unit_id' => ['required', 'exists:units,id'],
             'purchase_price' => ['required', 'numeric', 'min:0'],
             'selling_price' => ['required', 'numeric', 'min:0'],
+            'max_discount' => ['required', 'numeric', 'min:0'],
             'quantity' => ['required', 'integer', 'min:0'],
             'min_stock' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],

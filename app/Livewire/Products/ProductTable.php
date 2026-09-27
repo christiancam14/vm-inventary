@@ -67,6 +67,7 @@ final class ProductTable extends PowerGridComponent
             ->add('unit_symbol', fn(Product $model) => $model->unit ? $model->unit->symbol : '-')
             ->add('purchase_price_formatted', fn(Product $model) => format_money($model->purchase_price))
             ->add('selling_price_formatted', fn(Product $model) => format_money($model->selling_price))
+            ->add('max_discount_formatted', fn(Product $model) => format_money($model->max_discount))
             ->add('margin_formatted', function(Product $model) {
                 // Calculate margin
                 $margin = $model->selling_price - $model->purchase_price;
@@ -130,6 +131,10 @@ final class ProductTable extends PowerGridComponent
                 ->bodyAttribute('text-right'),
 
             Column::make(__('Selling Price'), 'selling_price_formatted', 'selling_price')
+                ->sortable()
+                ->bodyAttribute('text-right'),
+
+            Column::make(__('Maximum discount'), 'max_discount_formatted', 'max_discount')
                 ->sortable()
                 ->bodyAttribute('text-right'),
 
