@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faktur #{{ $sale->invoice_number }}</title>
+    <title>{{ __('Invoice') }} #{{ $sale->invoice_number }}</title>
     <style>
         @media print {
             @page {
@@ -113,8 +113,6 @@
 
         .header-right .header-value {
             flex-grow: 0;
-            min-width: 150px;
-        }
             min-width: 150px;
         }
 
@@ -237,35 +235,43 @@
     </style>
 </head>
 <body>
+    @php
+        $storeName = \App\Models\Setting::get('store_name', config('app.name'));
+        $storeInitials = collect(preg_split('/\s+/u', trim((string) $storeName)))
+            ->filter()
+            ->take(2)
+            ->map(fn ($word) => mb_strtoupper(mb_substr($word, 0, 1)))
+            ->implode('');
+    @endphp
 
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="header-left">
-                <div class="logo-box">TB</div>
+                <div class="logo-box">{{ $storeInitials !== '' ? $storeInitials : 'VM' }}</div>
                 <div class="company-info">
-                    <div class="company-name">{{ \App\Models\Setting::get('store_name', config('app.name')) }}</div>
-                    <div class="company-desc">Menjual: Bahan Bangunan, Alat Teknik, Cat, Dll.</div>
+                    <div class="company-name">{{ $storeName }}</div>
+                    <div class="company-desc">{{ __('Clothing and accessories') }}</div>
                     <div class="company-address">
-                        {{ \App\Models\Setting::get('store_address', 'Jl. Default No. 1') }}<br>
-                        HP. {{ \App\Models\Setting::get('store_phone', '-') }}
+                        {{ \App\Models\Setting::get('store_address', __('Address not set')) }}<br>
+                        {{ __('Phone') }}: {{ \App\Models\Setting::get('store_phone', '-') }}
                     </div>
                 </div>
             </div>
             <div class="header-right">
                 <div class="header-row">
-                    <span>{{ $sale->sale_date->locale('id')->isoFormat('dddd, D MMMM Y') }}</span>
+                    <span>{{ $sale->sale_date->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY') }}</span>
                 </div>
                 <div class="header-row">
-                    <span class="header-label">Kepada Yth,</span>
-                    <span class="header-value">{{ $sale->customer->name ?? 'Guest' }}</span>
+                    <span class="header-label">{{ __('Customer') }}:</span>
+                    <span class="header-value">{{ $sale->customer->name ?? __('Walk-in Customer') }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Invoice No Line -->
         <div class="invoice-row">
-            <span class="invoice-label">FAKTUR / BON / KONTAN No.</span>
+            <span class="invoice-label">{{ __('Invoice No.') }}</span>
             <span class="invoice-value">{{ $sale->invoice_number }}</span>
         </div>
 
@@ -273,11 +279,11 @@
         <table>
             <thead>
                 <tr>
-                    <th class="col-name">Nama Barang</th>
-                    <th class="col-qty">Qty</th>
-                    <th class="col-price">Harga</th>
-                    <th class="col-disc">Diskon</th>
-                    <th class="col-total">Jumlah</th>
+                    <th class="col-name">{{ __('Product') }}</th>
+                    <th class="col-qty">{{ __('Qty') }}</th>
+                    <th class="col-price">{{ __('Price') }}</th>
+                    <th class="col-disc">{{ __('Discount') }}</th>
+                    <th class="col-total">{{ __('Amount') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -310,38 +316,38 @@
         <!-- Footer -->
         <div class="footer">
             <div class="footer-left">
-                <div>Tanda Terima</div>
+                <div>{{ __('Signature') }}</div>
                 <div class="signature-space"></div>
                 <div>( .................................... )</div>
             </div>
 
             <div class="footer-center">
                 <div class="disclaimer-box">
-                    Mohon diperiksa bahwa barang dalam keadaan baik pada waktu diterima, barang yang sudah dibeli tidak dapat dikembalikan
+                    {{ __('Receipt disclaimer') }}
                 </div>
             </div>
 
             <div class="footer-right">
                 <div class="amount-row">
-                    <span class="amount-label">Subtotal</span>
+                    <span class="amount-label">{{ __('Subtotal') }}</span>
                     <span class="amount-value">@money($sale->total + $sale->global_discount)</span>
                 </div>
                 @if($sale->global_discount > 0)
                 <div class="amount-row">
-                    <span class="amount-label">Diskon Extra</span>
+                    <span class="amount-label">{{ __('Extra Discount') }}</span>
                     <span class="amount-value">- @money($sale->global_discount)</span>
                 </div>
                 @endif
                 <div class="amount-row">
-                    <span class="amount-label">Total</span>
+                    <span class="amount-label">{{ __('Total') }}</span>
                     <span class="amount-value">@money($sale->total)</span>
                 </div>
                 <div class="amount-row">
-                    <span class="amount-label">Uang Diterima</span>
+                    <span class="amount-label">{{ __('Cash Received') }}</span>
                     <span class="amount-value">@money($sale->cash_received)</span>
                 </div>
                 <div class="amount-row">
-                    <span class="amount-label">Kembalian</span>
+                    <span class="amount-label">{{ __('Change') }}</span>
                     <span class="amount-value">@money($sale->change)</span>
                 </div>
             </div>

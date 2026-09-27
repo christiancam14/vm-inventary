@@ -900,57 +900,62 @@
         </x-modal>
 
         <!-- Create Customer Modal (Still using Blade/Alpine Hybrid for ease if reusable) -->
-        <x-modal name="customer-modal" focusable>
-            <div class="p-6" x-data="{
-                newCust: { name: '', email: '', phone: '', address: '', notes: '' },
-                errors: {},
-                loading: false,
-                i18n: {
-                    nameRequired: @json(__('Name is required.')),
-                    errorCreating: @json(__('Error creating customer')),
-                },
-                async save() {
-                    this.errors = {}; // Reset errors
+        <script>
+            function newCustomerForm() {
+                return {
+                    newCust: { name: '', email: '', phone: '', address: '', notes: '' },
+                    errors: {},
+                    loading: false,
+                    i18n: {
+                        nameRequired: @json(__('Name is required.')),
+                        errorCreating: @json(__('Error creating customer')),
+                        saving: @json(__('Saving...')),
+                        saveCustomer: @json(__('Save Customer')),
+                    },
+                    async save() {
+                        this.errors = {};
 
-                    if (!this.newCust.name.trim()) {
-                        this.errors.name = this.i18n.nameRequired;
-                        return;
-                    }
+                        if (!this.newCust.name.trim()) {
+                            this.errors.name = this.i18n.nameRequired;
+                            return;
+                        }
 
-                    this.loading = true;
-                    try {
-                        const res = await fetch('{{ route("ajax.customers.store") }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify(this.newCust)
-                        });
-                        const data = await res.json();
+                        this.loading = true;
+                        try {
+                            const res = await fetch(@json(route('ajax.customers.store')), {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': @json(csrf_token())
+                                },
+                                body: JSON.stringify(this.newCust)
+                            });
+                            const data = await res.json();
 
-                        if (res.ok) {
-                            this.$dispatch('close-modal', { name: 'customer-modal' });
-                            this.$dispatch('customer-created', data);
-                            this.newCust = { name: '', email: '', phone: '', address: '', notes: '' };
-                            this.errors = {};
-                        } else {
-                            if (data.errors) {
-                                // Map Laravel validation errors to Alpine errors object
-                                // Laravel returns { errors: { name: ['Error msg'], ... } }
+                            if (res.ok) {
+                                this.$dispatch('close-modal', { name: 'customer-modal' });
+                                this.$dispatch('customer-created', data);
+                                this.newCust = { name: '', email: '', phone: '', address: '', notes: '' };
+                                this.errors = {};
+                            } else if (data.errors) {
                                 Object.keys(data.errors).forEach(key => {
                                     this.errors[key] = data.errors[key][0];
                                 });
                             } else {
-                                // Fallback if generic error
                                 this.$dispatch('toast', { message: data.message || this.i18n.errorCreating, type: 'error' });
                             }
+                        } catch (e) {
+                            console.error(e);
+                        } finally {
+                            this.loading = false;
                         }
-                    } catch(e) { console.error(e); }
-                    finally { this.loading = false; }
-                }
-            }">
+                    }
+                };
+            }
+        </script>
+        <x-modal name="customer-modal" focusable>
+            <div class="p-6" x-data="newCustomerForm()">
                 <!-- Header -->
                 <div class="mb-6 space-y-1.5 text-center sm:text-left border-b border-gray-200 pb-4">
                     <h3 class="text-lg font-semibold leading-none tracking-tight text-foreground">
@@ -1034,7 +1039,7 @@
                                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
                             </template>
-                            <span x-text="loading ? @json(__('Saving...')) : @json(__('Save Customer'))"></span>
+                            <span x-text="loading ? i18n.saving : i18n.saveCustomer"></span>
                         </x-primary-button>
                     </div>
                 </div>

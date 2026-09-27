@@ -329,5 +329,11 @@
     "Reference": "Referencia",
     "Direction": "Movimiento",
     "Date": "Fecha",
-    "User": "Usuario"
+    "User": "Usuario",
+    "Clothing and accessories": "Ropa y accesorios",
+    "Invoice No.": "Factura No.",
+    "Signature": "Firma",
+    "Extra Discount": "Descuento adicional",
+    "Receipt disclaimer": "Verifique que los artículos estén en buen estado al recibirlos. Los artículos comprados no se pueden devolver.",
+    "Address not set": "Dirección no configurada"
 }

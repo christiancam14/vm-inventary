@@ -72,8 +72,8 @@ Run the entire stack — **Nginx, PHP, frontend assets, and PostgreSQL** — wit
 3. **Open the app** at [http://localhost:8080](http://localhost:8080)
 
 4. **Login with the default admin credentials:**
-    - **Username:** `admin`
-    - **Password:** `password`
+    - **Username:** `christiancam14`
+    - **Password:** `camachos14`
 
 On first start, Docker automatically:
 - Builds frontend assets (Vite)
@@ -186,8 +186,8 @@ Follow these steps to set up the project locally without Docker.
     ```
 
 11. **Login using the default admin credentials:**
-    - **Username:** `admin`
-    - **Password:** `password`
+    - **Username:** `christiancam14`
+    - **Password:** `camachos14`
 
 ## 💡 Contributing
 
