@@ -586,5 +586,8 @@
     "Delete Finance Category?": "¿Eliminar categoría financiera?",
     "Continue": "Continuar",
     "Are you absolutely sure?": "¿Estás completamente seguro?",
-    "This action cannot be undone. This will permanently delete your data.": "Esta acción no se puede deshacer. Se eliminarán los datos de forma permanente."
+    "This action cannot be undone. This will permanently delete your data.": "Esta acción no se puede deshacer. Se eliminarán los datos de forma permanente.",
+    "Point of sale": "Punto de venta",
+    "Account": "Cuenta",
+    "Open menu": "Abrir menú"
 }

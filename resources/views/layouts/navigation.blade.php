@@ -1,122 +1,124 @@
-<section class="py-4 bg-background border-b border-border">
+@php
+    $navLink = 'relative inline-flex h-16 items-center gap-2 px-3 text-[13px] font-medium tracking-wide text-stone-400 transition-colors hover:text-[#f7f3ec]';
+    $navLinkActive = 'relative inline-flex h-16 items-center gap-2 px-3 text-[13px] font-medium tracking-wide text-[#f7f3ec] after:absolute after:inset-x-3 after:bottom-0 after:h-px after:bg-[#c4a574]';
+    $navIcon = 'h-4 w-4 shrink-0 text-[#c4a574]';
+    $accountInitials = collect(explode(' ', Auth::user()->name))
+        ->filter()
+        ->map(fn ($part) => strtoupper(substr($part, 0, 1)))
+        ->take(2)
+        ->join('');
+@endphp
+
+<header class="sticky top-0 z-40 border-b border-[#c4a574]/35 bg-[#161513] text-[#f7f3ec] shadow-[0_10px_30px_-18px_rgba(0,0,0,0.7)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" x-data="{ mobileMenuOpen: false }">
-        <!-- Desktop Menu -->
         <nav class="hidden items-center justify-between lg:flex">
-            <div class="flex items-center gap-6">
-                <!-- Logo -->
-                <a href="{{ route('dashboard') }}" class="flex items-center">
-                    <span class="text-lg font-semibold tracking-tight text-foreground">VM POS</span>
-                </a>
+            <div class="flex min-w-0 items-center gap-6">
+                <x-brand-mark />
 
-                <!-- Navigation Menu -->
                 <div class="flex items-center">
-                    <div class="flex flex-row gap-1">
-                        <!-- Dashboard Link -->
-                        <a href="{{ route('dashboard') }}" class="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 {{ request()->routeIs('dashboard') ? 'bg-accent/50 text-accent-foreground' : 'bg-background' }}">
-                            <x-heroicon-o-squares-2x2 class="mr-2 h-4 w-4" />
-                            {{ __('Dashboard') }}
-                        </a>
+                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? $navLinkActive : $navLink }}">
+                        <x-heroicon-o-squares-2x2 class="{{ $navIcon }}" />
+                        {{ __('Dashboard') }}
+                    </a>
 
-                        <!-- Sales Dropdown -->
-                        <x-nav-dropdown active="{{ request()->routeIs(['sales.*', 'customers.*']) }}">
-                            <x-slot name="icon">
-                                <x-heroicon-o-banknotes class="mr-2 h-4 w-4" />
-                            </x-slot>
-                            <x-slot name="trigger">
+                    <x-nav-dropdown active="{{ request()->routeIs(['sales.*', 'customers.*']) }}">
+                        <x-slot name="icon">
+                            <x-heroicon-o-banknotes class="{{ $navIcon }}" />
+                        </x-slot>
+                        <x-slot name="trigger">
+                            {{ __('Sales') }}
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
+                                {{ __('POS') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('sales.index')" :active="request()->routeIs(['sales.index', 'sales.show'])">
                                 {{ __('Sales') }}
-                            </x-slot>
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
-                                    {{ __('POS') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('sales.index')" :active="request()->routeIs(['sales.index', 'sales.show'])">
-                                    {{ __('Sales') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
-                                    {{ __('Customers') }}
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-nav-dropdown>
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
+                                {{ __('Customers') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-nav-dropdown>
 
-                        <!-- Purchases Dropdown -->
-                        <x-nav-dropdown active="{{ request()->routeIs(['purchases.*', 'suppliers.*']) }}">
-                            <x-slot name="icon">
-                                <x-heroicon-o-shopping-cart class="mr-2 h-4 w-4" />
-                            </x-slot>
-                            <x-slot name="trigger">
+                    <x-nav-dropdown active="{{ request()->routeIs(['purchases.*', 'suppliers.*']) }}">
+                        <x-slot name="icon">
+                            <x-heroicon-o-shopping-cart class="{{ $navIcon }}" />
+                        </x-slot>
+                        <x-slot name="trigger">
+                            {{ __('Purchases') }}
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('purchases.index')" :active="request()->routeIs('purchases.*')">
                                 {{ __('Purchases') }}
-                            </x-slot>
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('purchases.index')" :active="request()->routeIs('purchases.*')">
-                                    {{ __('Purchases') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
-                                    {{ __('Suppliers') }}
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-nav-dropdown>
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
+                                {{ __('Suppliers') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-nav-dropdown>
 
-                        <!-- Finance Dropdown -->
-                        <x-nav-dropdown active="{{ request()->routeIs(['finance.*']) }}">
-                            <x-slot name="icon">
-                                <x-heroicon-o-currency-dollar class="mr-2 h-4 w-4" />
-                            </x-slot>
-                            <x-slot name="trigger">
-                                {{ __('Finance') }}
-                            </x-slot>
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('finance.transactions.index')" :active="request()->routeIs('finance.transactions.index')">
-                                    {{ __('Transactions') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('finance.categories.index')" :active="request()->routeIs('finance.categories.index')">
-                                    {{ __('Categories') }}
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-nav-dropdown>
+                    <x-nav-dropdown active="{{ request()->routeIs(['finance.*']) }}">
+                        <x-slot name="icon">
+                            <x-heroicon-o-currency-dollar class="{{ $navIcon }}" />
+                        </x-slot>
+                        <x-slot name="trigger">
+                            {{ __('Finance') }}
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('finance.transactions.index')" :active="request()->routeIs('finance.transactions.index')">
+                                {{ __('Transactions') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('finance.categories.index')" :active="request()->routeIs('finance.categories.index')">
+                                {{ __('Categories') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-nav-dropdown>
 
-                        <!-- Users Link -->
-                        <a href="{{ route('users.index') }}" class="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 {{ request()->routeIs('users.*') ? 'bg-accent/50 text-accent-foreground' : 'bg-background' }}">
-                            <x-heroicon-o-users class="mr-2 h-4 w-4" />
-                            {{ __('Users') }}
-                        </a>
+                    <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? $navLinkActive : $navLink }}">
+                        <x-heroicon-o-users class="{{ $navIcon }}" />
+                        {{ __('Users') }}
+                    </a>
 
-                        <!-- Products Dropdown -->
-                        <x-nav-dropdown active="{{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*', 'inventory-movements.*']) }}">
-                            <x-slot name="icon">
-                                <x-heroicon-o-cube class="mr-2 h-4 w-4" />
-                            </x-slot>
-                            <x-slot name="trigger">
+                    <x-nav-dropdown active="{{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*', 'inventory-movements.*']) }}">
+                        <x-slot name="icon">
+                            <x-heroicon-o-cube class="{{ $navIcon }}" />
+                        </x-slot>
+                        <x-slot name="trigger">
+                            {{ __('Products') }}
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('products.index')" :active="request()->routeIs('products.*')">
                                 {{ __('Products') }}
-                            </x-slot>
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                                    {{ __('Products') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('low-stock.index')" :active="request()->routeIs('low-stock.*')">
-                                    {{ __('Low Stock') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('inventory-movements.index')" :active="request()->routeIs('inventory-movements.*')">
-                                    {{ __('Inventory movements') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
-                                    {{ __('Categories') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('units.index')" :active="request()->routeIs('units.*')">
-                                    {{ __('Units') }}
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-nav-dropdown>
-                    </div>
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('low-stock.index')" :active="request()->routeIs('low-stock.*')">
+                                {{ __('Low Stock') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('inventory-movements.index')" :active="request()->routeIs('inventory-movements.*')">
+                                {{ __('Inventory movements') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                                {{ __('Categories') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('units.index')" :active="request()->routeIs('units.*')">
+                                {{ __('Units') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-nav-dropdown>
                 </div>
             </div>
 
-            <!-- User Auth Buttons -->
-            <div class="flex gap-2">
-                <x-dropdown align="right" width="48">
+            <div class="flex shrink-0 items-center">
+                <x-dropdown align="right" width="48" contentClasses="bg-[#fbfaf7] py-1.5">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 gap-2">
-                            <span class="hidden md:inline-flex">{{ Auth::user()->name }}</span>
-                            <x-avatar :name="Auth::user()->name" />
+                        <button type="button" class="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 py-1 pl-1 pr-3 text-left transition-colors hover:border-[#c4a574]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c4a574]/70">
+                            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#c4a574]/15 text-[11px] font-semibold tracking-wide text-[#e8d7b8]">
+                                {{ $accountInitials }}
+                            </span>
+                            <span class="hidden xl:block leading-none">
+                                <span class="block max-w-[9rem] truncate text-xs font-medium text-[#f7f3ec]">{{ Auth::user()->name }}</span>
+                                <span class="mt-1 block text-[10px] uppercase tracking-[0.16em] text-stone-400">{{ __('Account') }}</span>
+                            </span>
                         </button>
                     </x-slot>
 
@@ -129,13 +131,10 @@
                             {{ __('Settings') }}
                         </x-dropdown-link>
 
-                        <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
@@ -144,142 +143,119 @@
             </div>
         </nav>
 
-        <!-- Mobile Menu -->
-        <div class="block lg:hidden">
-            <div class="flex items-center justify-between">
-                <!-- Logo -->
-                <a href="{{ route('dashboard') }}" class="flex items-center">
-                    <span class="text-lg font-semibold tracking-tight text-foreground">VM POS</span>
-                </a>
+        <div class="flex h-16 items-center justify-between lg:hidden">
+            <x-brand-mark compact />
 
-                <button @click="mobileMenuOpen = true" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                    <x-heroicon-o-bars-3 class="h-4 w-4" />
+            <button @click="mobileMenuOpen = true" type="button" class="inline-flex h-10 w-10 items-center justify-center border border-white/10 text-[#f7f3ec] transition-colors hover:border-[#c4a574]/60" aria-label="{{ __('Open menu') }}">
+                <x-heroicon-o-bars-3 class="h-5 w-5" />
+            </button>
+        </div>
+
+        <div x-show="mobileMenuOpen"
+            x-transition:enter="duration-300 ease-out"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="duration-200 ease-in"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 z-50 bg-black/50"
+            style="display: none;"
+            @click="mobileMenuOpen = false">
+        </div>
+
+        <div x-show="mobileMenuOpen"
+            x-transition:enter="duration-300 ease-out"
+            x-transition:enter-start="translate-x-full"
+            x-transition:enter-end="translate-x-0"
+            x-transition:leave="duration-200 ease-in"
+            x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="translate-x-full"
+            class="fixed inset-y-0 right-0 z-50 flex h-full w-[min(100%,22rem)] flex-col border-l border-[#c4a574]/30 bg-[#161513] p-6 text-[#f7f3ec] shadow-2xl"
+            style="display: none;"
+            @click.stop>
+
+            <div class="flex items-center justify-between">
+                <x-brand-mark />
+                <button @click="mobileMenuOpen = false" type="button" class="inline-flex h-9 w-9 items-center justify-center text-stone-300 hover:text-[#f7f3ec]">
+                    <span class="sr-only">{{ __('Close') }}</span>
+                    <x-heroicon-o-x-mark class="h-5 w-5" />
                 </button>
             </div>
 
-            <!-- Mobile Sheet/Drawer -->
-            <div x-show="mobileMenuOpen"
-                x-transition:enter="duration-300 ease-out"
-                x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100"
-                x-transition:leave="duration-200 ease-in"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-                class="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
-                style="display: none;"
-                @click="mobileMenuOpen = false">
-            </div>
+            <div class="mt-8 flex flex-1 flex-col gap-5 overflow-y-auto">
+                <a href="{{ route('dashboard') }}" class="text-sm font-medium tracking-wide {{ request()->routeIs('dashboard') ? 'text-[#e8d7b8]' : 'text-stone-300' }}">{{ __('Dashboard') }}</a>
 
-            <div x-show="mobileMenuOpen"
-                x-transition:enter="duration-500 ease-in-out"
-                x-transition:enter-start="translate-x-full"
-                x-transition:enter-end="translate-x-0"
-                x-transition:leave="duration-500 ease-in-out"
-                x-transition:leave-start="translate-x-0"
-                x-transition:leave-end="translate-x-full"
-                class="fixed inset-y-0 right-0 z-50 h-full w-3/4 gap-4 border-l bg-background p-6 shadow-lg sm:max-w-sm"
-                style="display: none;"
-                @click.stop>
-
-                <div class="flex flex-col gap-6">
-                    <div class="flex items-center justify-between">
-                        <a href="{{ route('dashboard') }}" class="flex items-center">
-                            <span class="text-lg font-semibold tracking-tight text-foreground">VM POS</span>
-                        </a>
-                        <button @click="mobileMenuOpen = false" class="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                            <span class="sr-only">{{ __('Close') }}</span>
-                            <x-heroicon-o-x-mark class="h-4 w-4" />
-                        </button>
+                <div x-data="{ expanded: {{ request()->routeIs(['sales.*', 'customers.*']) ? 'true' : 'false' }} }">
+                    <button @click="expanded = !expanded" type="button" class="flex w-full items-center justify-between text-sm font-medium tracking-wide {{ request()->routeIs(['sales.*', 'customers.*']) ? 'text-[#e8d7b8]' : 'text-stone-300' }}">
+                        {{ __('Sales') }}
+                        <x-heroicon-o-chevron-down class="h-4 w-4 transition-transform duration-200" x-bind:class="expanded ? 'rotate-180' : ''" />
+                    </button>
+                    <div x-show="expanded" x-collapse>
+                        <div class="mt-3 flex flex-col gap-2 border-l border-[#c4a574]/30 pl-4">
+                            <a class="py-1 text-sm {{ request()->routeIs('sales.create') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('sales.create') }}">{{ __('POS') }}</a>
+                            <a class="py-1 text-sm {{ request()->routeIs(['sales.index', 'sales.show']) ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('sales.index') }}">{{ __('Sales') }}</a>
+                            <a class="py-1 text-sm {{ request()->routeIs('customers.index') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('customers.index') }}">{{ __('Customers') }}</a>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="flex w-full flex-col gap-4">
-                        <a href="{{ route('dashboard') }}" class="text-md font-semibold hover:underline {{ request()->routeIs('dashboard') ? 'text-primary' : '' }}">{{ __('Dashboard') }}</a>
-
-                        <!-- Mobile Sales Accordion -->
-                        <div x-data="{ expanded: {{ request()->routeIs(['sales.*', 'customers.*']) ? 'true' : 'false' }} }" class="border-b-0">
-                            <button @click="expanded = !expanded" class="flex flex-1 items-center justify-between py-0 font-semibold transition-all hover:underline [&[data-state=open]>svg]:rotate-180 w-full text-left text-md {{ request()->routeIs(['sales.*', 'customers.*']) ? 'text-primary' : '' }}">
-                                {{ __('Sales') }}
-                                <x-heroicon-o-chevron-down :class="{'rotate-180': expanded}" class="h-4 w-4 shrink-0 transition-transform duration-200" />
-                            </button>
-                            <div x-show="expanded" x-collapse>
-                                <div class="mt-2 flex flex-col gap-2 pl-4 border-l border-border ml-2">
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs(['sales.index', 'sales.show']) ? 'text-primary' : '' }}" href="{{ route('sales.index') }}">{{ __('Sales') }}</a>
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('sales.create') ? 'text-primary' : '' }}" href="{{ route('sales.create') }}">{{ __('POS') }}</a>
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('customers.index') ? 'text-primary' : '' }}" href="{{ route('customers.index') }}">{{ __('Customers') }}</a>
-                                </div>
-                            </div>
+                <div x-data="{ expanded: {{ request()->routeIs(['purchases.*', 'suppliers.*']) ? 'true' : 'false' }} }">
+                    <button @click="expanded = !expanded" type="button" class="flex w-full items-center justify-between text-sm font-medium tracking-wide {{ request()->routeIs(['purchases.*', 'suppliers.*']) ? 'text-[#e8d7b8]' : 'text-stone-300' }}">
+                        {{ __('Purchases') }}
+                        <x-heroicon-o-chevron-down class="h-4 w-4 transition-transform duration-200" x-bind:class="expanded ? 'rotate-180' : ''" />
+                    </button>
+                    <div x-show="expanded" x-collapse>
+                        <div class="mt-3 flex flex-col gap-2 border-l border-[#c4a574]/30 pl-4">
+                            <a class="py-1 text-sm {{ request()->routeIs('purchases.*') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('purchases.index') }}">{{ __('Purchases') }}</a>
+                            <a class="py-1 text-sm {{ request()->routeIs('suppliers.index') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('suppliers.index') }}">{{ __('Suppliers') }}</a>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Mobile Purchases Accordion -->
-                        <div x-data="{ expanded: {{ request()->routeIs(['purchases.*', 'suppliers.*']) ? 'true' : 'false' }} }" class="border-b-0">
-                            <button @click="expanded = !expanded" class="flex flex-1 items-center justify-between py-0 font-semibold transition-all hover:underline [&[data-state=open]>svg]:rotate-180 w-full text-left text-md {{ request()->routeIs(['purchases.*', 'suppliers.*']) ? 'text-primary' : '' }}">
-                                {{ __('Purchases') }}
-                                <x-heroicon-o-chevron-down :class="{'rotate-180': expanded}" class="h-4 w-4 shrink-0 transition-transform duration-200" />
-                            </button>
-                            <div x-show="expanded" x-collapse>
-                                <div class="mt-2 flex flex-col gap-2 pl-4 border-l border-border ml-2">
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('purchases.index') ? 'text-primary' : '' }}" href="{{ route('purchases.index') }}">{{ __('Purchases') }}</a>
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('suppliers.index') ? 'text-primary' : '' }}" href="{{ route('suppliers.index') }}">{{ __('Suppliers') }}</a>
-                                </div>
-                            </div>
+                <div x-data="{ expanded: {{ request()->routeIs(['finance.*']) ? 'true' : 'false' }} }">
+                    <button @click="expanded = !expanded" type="button" class="flex w-full items-center justify-between text-sm font-medium tracking-wide {{ request()->routeIs(['finance.*']) ? 'text-[#e8d7b8]' : 'text-stone-300' }}">
+                        {{ __('Finance') }}
+                        <x-heroicon-o-chevron-down class="h-4 w-4 transition-transform duration-200" x-bind:class="expanded ? 'rotate-180' : ''" />
+                    </button>
+                    <div x-show="expanded" x-collapse>
+                        <div class="mt-3 flex flex-col gap-2 border-l border-[#c4a574]/30 pl-4">
+                            <a class="py-1 text-sm {{ request()->routeIs('finance.transactions.index') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('finance.transactions.index') }}">{{ __('Transactions') }}</a>
+                            <a class="py-1 text-sm {{ request()->routeIs('finance.categories.index') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('finance.categories.index') }}">{{ __('Categories') }}</a>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Mobile Finance Accordion -->
-                        <div x-data="{ expanded: {{ request()->routeIs(['finance.*']) ? 'true' : 'false' }} }" class="border-b-0">
-                            <button @click="expanded = !expanded" class="flex flex-1 items-center justify-between py-0 font-semibold transition-all hover:underline [&[data-state=open]>svg]:rotate-180 w-full text-left text-md {{ request()->routeIs(['finance.*']) ? 'text-primary' : '' }}">
-                                {{ __('Finance') }}
-                                <x-heroicon-o-chevron-down :class="{'rotate-180': expanded}" class="h-4 w-4 shrink-0 transition-transform duration-200" />
-                            </button>
-                            <div x-show="expanded" x-collapse>
-                                <div class="mt-2 flex flex-col gap-2 pl-4 border-l border-border ml-2">
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('finance.transactions.index') ? 'text-primary' : '' }}" href="{{ route('finance.transactions.index') }}">{{ __('Transactions') }}</a>
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('finance.categories.index') ? 'text-primary' : '' }}" href="{{ route('finance.categories.index') }}">{{ __('Categories') }}</a>
-                                </div>
-                            </div>
-                        </div>
+                <a href="{{ route('users.index') }}" class="text-sm font-medium tracking-wide {{ request()->routeIs('users.*') ? 'text-[#e8d7b8]' : 'text-stone-300' }}">{{ __('Users') }}</a>
 
-                        <!-- Mobile Users Link -->
-                        <a href="{{ route('users.index') }}" class="text-md font-semibold hover:underline border-b pb-4 {{ request()->routeIs('users.*') ? 'text-primary' : '' }}">{{ __('Users') }}</a>
-
-                        <!-- Mobile Products Accordion -->
-                        <div x-data="{ expanded: {{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*', 'inventory-movements.*']) ? 'true' : 'false' }} }" class="border-b-0">
-                            <button @click="expanded = !expanded" class="flex flex-1 items-center justify-between py-0 font-semibold transition-all hover:underline [&[data-state=open]>svg]:rotate-180 w-full text-left text-md {{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*', 'inventory-movements.*']) ? 'text-primary' : '' }}">
-                                {{ __('Products') }}
-                                <x-heroicon-o-chevron-down :class="{'rotate-180': expanded}" class="h-4 w-4 shrink-0 transition-transform duration-200" />
-                            </button>
-                            <div x-show="expanded" x-collapse>
-                                <div class="mt-2 flex flex-col gap-2 pl-4 border-l border-border ml-2">
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('products.index') ? 'text-primary' : '' }}" href="{{ route('products.index') }}">{{ __('Products') }}</a>
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('low-stock.index') ? 'text-primary' : '' }}" href="{{ route('low-stock.index') }}">{{ __('Low Stock') }}</a>
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('inventory-movements.index') ? 'text-primary' : '' }}" href="{{ route('inventory-movements.index') }}">{{ __('Inventory movements') }}</a>
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('categories.index') ? 'text-primary' : '' }}" href="{{ route('categories.index') }}">{{ __('Categories') }}</a>
-                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('units.index') ? 'text-primary' : '' }}" href="{{ route('units.index') }}">{{ __('Units') }}</a>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    <!-- Mobile User Menu -->
-                        <div class="pt-4 mt-4 border-t border-border">
-                            <div class="font-medium text-base text-foreground mb-2">{{ Auth::user()->name }}</div>
-                            <div class="flex flex-col gap-3">
-                                <a href="{{ route('profile.index') }}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input h-9 px-4 py-2 w-full {{ request()->routeIs('profile.*') ? 'bg-accent text-accent-foreground' : 'bg-background hover:bg-accent hover:text-accent-foreground' }}">
-                                    {{ __('Profile') }}
-                                </a>
-                                <a href="{{ route('settings.index') }}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input h-9 px-4 py-2 w-full {{ request()->routeIs('settings.*') ? 'bg-accent text-accent-foreground' : 'bg-background hover:bg-accent hover:text-accent-foreground' }}">
-                                    {{ __('Settings') }}
-                                </a>
-                                <form method="POST" action="{{ route('logout') }}" class="w-full">
-                                    @csrf
-                                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 w-full">
-                                        {{ __('Log Out') }}
-                                    </button>
-                                </form>
-                            </div>
+                <div x-data="{ expanded: {{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*', 'inventory-movements.*']) ? 'true' : 'false' }} }">
+                    <button @click="expanded = !expanded" type="button" class="flex w-full items-center justify-between text-sm font-medium tracking-wide {{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*', 'inventory-movements.*']) ? 'text-[#e8d7b8]' : 'text-stone-300' }}">
+                        {{ __('Products') }}
+                        <x-heroicon-o-chevron-down class="h-4 w-4 transition-transform duration-200" x-bind:class="expanded ? 'rotate-180' : ''" />
+                    </button>
+                    <div x-show="expanded" x-collapse>
+                        <div class="mt-3 flex flex-col gap-2 border-l border-[#c4a574]/30 pl-4">
+                            <a class="py-1 text-sm {{ request()->routeIs('products.index') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('products.index') }}">{{ __('Products') }}</a>
+                            <a class="py-1 text-sm {{ request()->routeIs('low-stock.index') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('low-stock.index') }}">{{ __('Low Stock') }}</a>
+                            <a class="py-1 text-sm {{ request()->routeIs('inventory-movements.index') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('inventory-movements.index') }}">{{ __('Inventory movements') }}</a>
+                            <a class="py-1 text-sm {{ request()->routeIs('categories.index') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('categories.index') }}">{{ __('Categories') }}</a>
+                            <a class="py-1 text-sm {{ request()->routeIs('units.index') ? 'text-[#e8d7b8]' : 'text-stone-400' }}" href="{{ route('units.index') }}">{{ __('Units') }}</a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="mt-6 border-t border-white/10 pt-5">
+                <p class="text-sm font-medium text-[#f7f3ec]">{{ Auth::user()->name }}</p>
+                <p class="mt-1 text-[10px] uppercase tracking-[0.16em] text-stone-400">{{ __('Account') }}</p>
+                <div class="mt-4 flex flex-col gap-2">
+                    <a href="{{ route('profile.index') }}" class="border border-white/10 px-3 py-2 text-center text-sm text-stone-200 hover:border-[#c4a574]/60">{{ __('Profile') }}</a>
+                    <a href="{{ route('settings.index') }}" class="border border-white/10 px-3 py-2 text-center text-sm text-stone-200 hover:border-[#c4a574]/60">{{ __('Settings') }}</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full border border-[#c4a574]/50 px-3 py-2 text-sm text-[#e8d7b8] hover:bg-[#c4a574]/10">{{ __('Log Out') }}</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</section>
+</header>
