@@ -9,12 +9,15 @@ use App\Models\Product;
 use App\Enums\SaleStatus;
 use App\Enums\PaymentMethod;
 use App\Exceptions\SaleException;
+use App\Enums\InventoryMovementType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SaleService
 {
     public function __construct(
-        protected FinanceTransactionService $financeService
+        protected FinanceTransactionService $financeService,
+        protected InventoryMovementService $movements,
     ) {
     }
 
@@ -69,9 +72,19 @@ class SaleService
                         );
                     }
 
-                    // Update stock
+                    $stockBefore = $product->quantity;
                     $product->quantity -= $itemData->quantity;
                     $product->save();
+
+                    $this->movements->record(
+                        $product,
+                        InventoryMovementType::Sale,
+                        $itemData->quantity,
+                        $stockBefore,
+                        $product->quantity,
+                        $sale,
+                        $data->created_by,
+                    );
 
                     $unitPrice = $product->selling_price;
                     $quantity = $itemData->quantity;
@@ -162,9 +175,23 @@ class SaleService
                     $sale->loadMissing('items.product');
 
                     foreach ($sale->items as $item) {
-                        if ($item->product) {
-                            $item->product->increment('quantity', $item->quantity);
+                        if (!$item->product) {
+                            continue;
                         }
+
+                        $stockBefore = $item->product->quantity;
+                        $item->product->increment('quantity', $item->quantity);
+
+                        $this->movements->record(
+                            $item->product,
+                            InventoryMovementType::SaleReturn,
+                            $item->quantity,
+                            $stockBefore,
+                            $item->product->quantity,
+                            $sale,
+                            Auth::id(),
+                            $reason,
+                        );
                     }
                 }
 
@@ -253,7 +280,18 @@ class SaleService
                     );
                 }
 
+                $stockBefore = $product->quantity;
                 $product->decrement('quantity', $item->quantity);
+
+                $this->movements->record(
+                    $product,
+                    InventoryMovementType::SaleRestore,
+                    $item->quantity,
+                    $stockBefore,
+                    $product->quantity,
+                    $sale,
+                    Auth::id(),
+                );
             }
 
             // Restore to PENDING

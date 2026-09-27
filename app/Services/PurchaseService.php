@@ -8,13 +8,16 @@ use App\Models\Purchase;
 use App\DTOs\PurchaseData;
 use App\Models\PurchaseItem;
 use App\Enums\PurchaseStatus;
+use App\Enums\InventoryMovementType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\PurchaseException;
 
 class PurchaseService
 {
     public function __construct(
-        protected FinanceTransactionService $financeService
+        protected FinanceTransactionService $financeService,
+        protected InventoryMovementService $movements,
     ) {
     }
 
@@ -136,7 +139,18 @@ class PurchaseService
                 $product = Product::where('id', $item->product_id)->lockForUpdate()->first();
 
                 if ($product) {
+                    $stockBefore = $product->quantity;
                     $product->increment('quantity', $item->quantity);
+
+                    $this->movements->record(
+                        $product,
+                        InventoryMovementType::PurchaseReceipt,
+                        $item->quantity,
+                        $stockBefore,
+                        $product->quantity,
+                        $purchase,
+                        Auth::id() ?? $purchase->created_by,
+                    );
 
                     // Update latest purchase price and selling price
                     $updateData = ['purchase_price' => $item->unit_price];

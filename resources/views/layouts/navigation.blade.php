@@ -4,11 +4,8 @@
         <nav class="hidden items-center justify-between lg:flex">
             <div class="flex items-center gap-6">
                 <!-- Logo -->
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-                    <x-application-logo class="w-8 h-8 fill-current text-foreground" />
-                    <span class="text-md font-semibold tracking-tighter text-foreground">
-                        {{ config('app.name', 'Laravel') }}
-                    </span>
+                <a href="{{ route('dashboard') }}" class="flex items-center">
+                    <span class="text-lg font-semibold tracking-tight text-foreground">VM POS</span>
                 </a>
 
                 <!-- Navigation Menu -->
@@ -84,7 +81,7 @@
                         </a>
 
                         <!-- Products Dropdown -->
-                        <x-nav-dropdown active="{{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*']) }}">
+                        <x-nav-dropdown active="{{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*', 'inventory-movements.*']) }}">
                             <x-slot name="icon">
                                 <x-heroicon-o-cube class="mr-2 h-4 w-4" />
                             </x-slot>
@@ -97,6 +94,9 @@
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('low-stock.index')" :active="request()->routeIs('low-stock.*')">
                                     {{ __('Low Stock') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('inventory-movements.index')" :active="request()->routeIs('inventory-movements.*')">
+                                    {{ __('Inventory movements') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
                                     {{ __('Categories') }}
@@ -148,8 +148,8 @@
         <div class="block lg:hidden">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-                    <x-application-logo class="w-8 h-8 fill-current text-foreground" />
+                <a href="{{ route('dashboard') }}" class="flex items-center">
+                    <span class="text-lg font-semibold tracking-tight text-foreground">VM POS</span>
                 </a>
 
                 <button @click="mobileMenuOpen = true" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10">
@@ -183,9 +183,8 @@
 
                 <div class="flex flex-col gap-6">
                     <div class="flex items-center justify-between">
-                        <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-                            <x-application-logo class="w-8 h-8 fill-current text-foreground" />
-                            <span class="text-lg font-semibold">{{ config('app.name') }}</span>
+                        <a href="{{ route('dashboard') }}" class="flex items-center">
+                            <span class="text-lg font-semibold tracking-tight text-foreground">VM POS</span>
                         </a>
                         <button @click="mobileMenuOpen = false" class="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
                             <span class="sr-only">{{ __('Close') }}</span>
@@ -243,8 +242,8 @@
                         <a href="{{ route('users.index') }}" class="text-md font-semibold hover:underline border-b pb-4 {{ request()->routeIs('users.*') ? 'text-primary' : '' }}">{{ __('Users') }}</a>
 
                         <!-- Mobile Products Accordion -->
-                        <div x-data="{ expanded: {{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*']) ? 'true' : 'false' }} }" class="border-b-0">
-                            <button @click="expanded = !expanded" class="flex flex-1 items-center justify-between py-0 font-semibold transition-all hover:underline [&[data-state=open]>svg]:rotate-180 w-full text-left text-md {{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*']) ? 'text-primary' : '' }}">
+                        <div x-data="{ expanded: {{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*', 'inventory-movements.*']) ? 'true' : 'false' }} }" class="border-b-0">
+                            <button @click="expanded = !expanded" class="flex flex-1 items-center justify-between py-0 font-semibold transition-all hover:underline [&[data-state=open]>svg]:rotate-180 w-full text-left text-md {{ request()->routeIs(['products.*', 'categories.*', 'units.*', 'low-stock.*', 'inventory-movements.*']) ? 'text-primary' : '' }}">
                                 {{ __('Products') }}
                                 <x-heroicon-o-chevron-down :class="{'rotate-180': expanded}" class="h-4 w-4 shrink-0 transition-transform duration-200" />
                             </button>
@@ -252,6 +251,7 @@
                                 <div class="mt-2 flex flex-col gap-2 pl-4 border-l border-border ml-2">
                                     <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('products.index') ? 'text-primary' : '' }}" href="{{ route('products.index') }}">{{ __('Products') }}</a>
                                     <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('low-stock.index') ? 'text-primary' : '' }}" href="{{ route('low-stock.index') }}">{{ __('Low Stock') }}</a>
+                                    <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('inventory-movements.index') ? 'text-primary' : '' }}" href="{{ route('inventory-movements.index') }}">{{ __('Inventory movements') }}</a>
                                     <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('categories.index') ? 'text-primary' : '' }}" href="{{ route('categories.index') }}">{{ __('Categories') }}</a>
                                     <a class="text-sm font-medium hover:underline py-1 {{ request()->routeIs('units.index') ? 'text-primary' : '' }}" href="{{ route('units.index') }}">{{ __('Units') }}</a>
                                 </div>

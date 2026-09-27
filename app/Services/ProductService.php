@@ -7,10 +7,17 @@ use App\Models\Product;
 use Illuminate\Support\Str;
 use App\DTOs\ProductData;
 use App\Exceptions\ProductException;
+use App\Enums\InventoryMovementType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
+    public function __construct(
+        protected InventoryMovementService $movements,
+    ) {
+    }
+
     /**
      * Create a new product.
      */
@@ -20,7 +27,7 @@ class ProductService
             try {
                 $sku = $data->sku ?? $this->generateUniqueSku();
 
-                return Product::create([
+                $product = Product::create([
                     'category_id' => $data->category_id,
                     'unit_id' => $data->unit_id,
                     'sku' => $sku,
@@ -34,6 +41,21 @@ class ProductService
                     'description' => $data->description,
                     'notes' => $data->notes,
                 ]);
+
+                if ($product->quantity > 0) {
+                    $this->movements->record(
+                        $product,
+                        InventoryMovementType::InitialStock,
+                        $product->quantity,
+                        0,
+                        $product->quantity,
+                        null,
+                        Auth::id(),
+                        __('Initial stock'),
+                    );
+                }
+
+                return $product;
 
             } catch (Exception $e) {
                 throw ProductException::creationFailed($e->getMessage(), [
@@ -51,6 +73,8 @@ class ProductService
     {
         return DB::transaction(function () use ($product, $data) {
             try {
+                $stockBefore = $product->quantity;
+
                 $product->update([
                     'category_id' => $data->category_id,
                     'unit_id' => $data->unit_id,
@@ -66,7 +90,23 @@ class ProductService
                     'notes' => $data->notes,
                 ]);
 
-                return $product->refresh();
+                $product->refresh();
+                $difference = $product->quantity - $stockBefore;
+
+                if ($difference !== 0) {
+                    $this->movements->record(
+                        $product,
+                        $difference > 0 ? InventoryMovementType::AdjustmentIn : InventoryMovementType::AdjustmentOut,
+                        abs($difference),
+                        $stockBefore,
+                        $product->quantity,
+                        null,
+                        Auth::id(),
+                        __('Manual stock adjustment'),
+                    );
+                }
+
+                return $product;
 
             } catch (Exception $e) {
                 throw ProductException::updateFailed($e->getMessage(), [

@@ -12,46 +12,41 @@
 
         <form wire:submit="save" class="space-y-6">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- SKU -->
-                @if($isEditing)
-                    <x-form-input
-                        name="sku"
-                        label="SKU (Stock Keeping Unit)"
-                        type="text"
-                        wire:model="sku"
-                        readonly
-                        placeholder="e.g. SKU-1234-ABCD"
-                        class="bg-muted text-muted-foreground cursor-not-allowed"
-                    />
-                @else
-                    <!-- SKU Auto Generated -->
-                    <div class="hidden">
-                        <input type="hidden" wire:model="sku">
-                    </div>
-                @endif
+            @unless($isEditing)
+                <input type="hidden" wire:model="sku">
+            @endunless
 
-                <!-- Name -->
-                <x-form-input
-                    name="name"
-                    label="Product Name"
-                    placeholder="e.g. Camiseta básica blanca - M"
-                    type="text"
-                    wire:model="name"
-                    required
-                    class="{{ !$isEditing ? 'col-span-2' : '' }}"
-                />
-            </div>
-
-            <!-- Optional barcode -->
             <x-form-input
-                name="barcode"
-                label="Barcode (optional)"
+                name="name"
+                :label="__('Product Name')"
+                placeholder="e.g. Camiseta básica blanca - M"
                 type="text"
-                wire:model="barcode"
-                placeholder="Scan or type EAN/UPC — leave empty if unused"
+                wire:model="name"
+                required
             />
-            <p class="text-xs text-muted-foreground -mt-4">If set, you can scan this code in POS to add the product to the cart.</p>
+
+            @if($isEditing)
+                <x-form-input
+                    name="sku"
+                    :label="__('SKU (Stock Keeping Unit)')"
+                    type="text"
+                    wire:model="sku"
+                    readonly
+                    placeholder="e.g. SKU-1234-ABCD"
+                    class="bg-muted text-muted-foreground cursor-not-allowed"
+                />
+            @endif
+
+            <div class="space-y-2">
+                <x-form-input
+                    name="barcode"
+                    :label="__('Barcode (optional)')"
+                    type="text"
+                    wire:model="barcode"
+                    :placeholder="__('Scan or type EAN/UPC — leave empty if unused')"
+                />
+                <p class="text-xs text-muted-foreground">{{ __('If set, you can scan this code in POS to add the product to the cart.') }}</p>
+            </div>
 
             <!-- Row 2: Category & Unit -->
             <div class="flex flex-col sm:flex-row gap-6">
@@ -65,7 +60,7 @@
                             wire:model="category_id"
                             :url="route('ajax.categories.search')"
                             method="POST"
-                            placeholder="Select Category"
+                            :placeholder="__('Select Category')"
                             data-initial-label="{{ $categoryName }}"
                         />
                     </div>
@@ -82,7 +77,7 @@
                             wire:model="unit_id"
                             :url="route('ajax.units.search')"
                             method="POST"
-                            placeholder="Select Unit"
+                            :placeholder="__('Select Unit')"
                             data-initial-label="{{ $unitName }}"
                         />
                     </div>
@@ -117,12 +112,10 @@
                 </div>
             </div>
 
-            <!-- Row 5: Qty, Min Stock, Active -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Quantity -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 items-end">
                 <x-form-input
                     name="quantity"
-                    label="Quantity"
+                    :label="__('Quantity')"
                     type="number"
                     wire:model="quantity"
                     min="0"
@@ -130,10 +123,9 @@
                     required
                 />
 
-                <!-- Min Stock -->
                 <x-form-input
                     name="min_stock"
-                    label="Min Stock Alert"
+                    :label="__('Min Stock Alert')"
                     type="number"
                     wire:model="min_stock"
                     min="0"
@@ -141,16 +133,18 @@
                     required
                 />
 
-                <!-- Is Active -->
-                <div class="flex items-center h-full pt-8">
-                    <label class="inline-flex items-center cursor-pointer">
+                <div class="space-y-2">
+                    <x-input-label for="is_active" :value="__('Status')" />
+                    <label for="is_active" class="flex h-10 items-center gap-3 cursor-pointer">
                         <input
+                            id="is_active"
                             type="checkbox"
-                            wire:model="is_active"
-                            class="w-6 h-6 rounded-full border-2 border-primary text-primary focus:ring-primary/20"
+                            wire:model.live="is_active"
+                            class="peer sr-only"
                         >
-                        <span class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{ __('Active') }}
+                        <span class="relative h-6 w-11 shrink-0 rounded-full bg-gray-200 transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-checked:bg-primary after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span>
+                        <span class="text-sm font-medium text-foreground">
+                            {{ $is_active ? __('Active') : __('Inactive') }}
                         </span>
                     </label>
                 </div>
@@ -158,26 +152,26 @@
 
             <!-- Description -->
             <div class="space-y-2">
-                <x-input-label for="description" value="Description" />
+                <x-input-label for="description" :value="__('Description')" />
                 <textarea
                     id="description"
                     wire:model="description"
                     rows="3"
                     class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Optional description..."
+                    placeholder="{{ __('Optional description...') }}"
                 ></textarea>
                 <x-input-error :messages="$errors->get('description')" />
             </div>
 
             <!-- Notes -->
             <div class="space-y-2">
-                <x-input-label for="notes" value="Internal Notes" />
+                <x-input-label for="notes" :value="__('Internal Notes')" />
                 <textarea
                     id="notes"
                     wire:model="notes"
                     rows="3"
                     class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Internal pricing history & notes..."
+                    placeholder="{{ __('Internal pricing history & notes...') }}"
                 ></textarea>
                 <x-input-error :messages="$errors->get('notes')" />
             </div>
