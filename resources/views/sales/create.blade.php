@@ -1,5 +1,5 @@
 <x-app-layout title="POS">
-    <div class="mx-auto sm:px-6 lg:px-8 py-4"
+    <div class="mx-auto sm:px-6 lg:px-8 py-3"
          x-data="pos()"
          x-init="init()"
          @keydown.window.f1.prevent="productTs && productTs.focus()"
@@ -8,12 +8,12 @@
          @keydown.window.f4.prevent="openCustomerModal()"
          @keydown.window.f9.prevent="$refs.barcodeInput && $refs.barcodeInput.focus()"
     >
-        <div class="flex flex-col lg:flex-row h-[calc(100vh-100px)] space-y-4 lg:space-y-0 lg:space-x-4 relative">
+        <div class="flex flex-col lg:flex-row h-[calc(100vh-100px)] gap-3 relative">
 
             <!-- Left Side: Transaction Details (70%) -->
-            <div class="w-full lg:w-[70%] flex flex-col space-y-4 h-full">
+            <div class="w-full lg:w-[70%] flex flex-col gap-3 h-full">
                 <!-- Search + optional barcode scan -->
-                <div class="relative z-20 mb-2 space-y-2">
+                <div class="relative z-20 space-y-2">
                     <select
                         x-ref="productSelect"
                         placeholder="{{ __('Search products (name, SKU or barcode) [F1]...') }}"
@@ -50,24 +50,24 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50 sticky top-0 z-10">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Product') }}</th>
-                                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Price') }}</th>
-                                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Qty') }}</th>
-                                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Unit') }}</th>
-                                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Disc/Unit') }}</th>
-                                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Total') }}</th>
-                                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Action') }}</th>
+                                    <th scope="col" class="px-4 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Product') }}</th>
+                                    <th scope="col" class="px-4 py-2.5 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Price') }}</th>
+                                    <th scope="col" class="px-4 py-2.5 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Qty') }}</th>
+                                    <th scope="col" class="px-4 py-2.5 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Unit') }}</th>
+                                    <th scope="col" class="px-4 py-2.5 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Disc/Unit') }}</th>
+                                    <th scope="col" class="px-4 py-2.5 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Total') }}</th>
+                                    <th scope="col" class="px-4 py-2.5 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <template x-for="(item, index) in cart" :key="item.id">
                                     <tr :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'" class="hover:bg-indigo-50 transition-colors">
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-4 py-3 whitespace-nowrap">
                                             <div class="text-sm font-medium text-gray-900" x-text="item.name"></div>
                                             <div class="text-xs text-gray-500" x-text="item.barcode ? (item.sku + ' · ' + item.barcode) : item.sku"></div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500" x-text="formatCurrency(item.price)"></td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                        <td class="px-4 py-3 whitespace-nowrap text-right text-sm text-gray-500" x-text="formatCurrency(item.price)"></td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center">
                                             <div class="flex items-center justify-center">
                                                 <input type="number" x-model="item.quantity" min="1" :max="item.max_stock"
                                                     @input="validateQty(index)"
@@ -78,8 +78,8 @@
                                                 {{ __('Max') }}: <span x-text="item.max_stock"></span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500" x-text="item.unit"></td>
-                                        <td class="px-6 py-4 text-right">
+                                        <td class="px-4 py-3 whitespace-nowrap text-center text-sm text-gray-500" x-text="item.unit"></td>
+                                        <td class="px-4 py-3 text-right">
                                             <div class="relative rounded-md shadow-sm w-32 ml-auto">
                                         <div class="absolute inset-y-0 flex items-center pointer-events-none" :class="window.currencyPosition === 'left' ? 'left-0 pl-2' : 'right-0 pr-2'">
                                             <span class="text-gray-500 sm:text-xs" x-text="window.currencySymbol"></span>
@@ -95,8 +95,8 @@
                                             </div>
                                             <p class="text-[11px] text-gray-500 mt-1">{{ __('Max') }}: <span x-text="formatCurrency(discountCap(item))"></span></p>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900" x-text="formatCurrency((item.price - item.discount) * item.quantity)"></td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                        <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-semibold text-gray-900" x-text="formatCurrency((item.price - item.discount) * item.quantity)"></td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center text-sm font-medium">
                                             <button @click="removeFromCart(index)" class="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-600 hover:bg-red-200 focus:outline-none transition-colors mx-auto">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
@@ -105,10 +105,10 @@
                                 </template>
                                 <template x-if="cart.length === 0">
                                     <tr>
-                                        <td colspan="7" class="px-6 py-20 text-center text-gray-500">
+                                        <td colspan="7" class="px-4 py-14 text-center text-gray-500">
                                             <div class="flex flex-col items-center justify-center">
-                                                <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                                                <p class="text-base font-medium">{{ __('Cart is empty') }}</p>
+                                                <svg class="w-10 h-10 text-gray-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                                <p class="text-sm font-medium">{{ __('Cart is empty') }}</p>
                                                 <p class="text-sm text-gray-400">{{ __('Search or scan a barcode to start') }}</p>
                                             </div>
                                         </td>
@@ -123,13 +123,13 @@
             <!-- Right Side: Payment Details (30%) -->
             <div class="w-full lg:w-[30%] flex flex-col bg-white rounded-lg shadow border border-gray-200 h-full">
                 <!-- Header -->
-                <div class="p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
-                    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wide">{{ __('Payment Details') }}</h2>
+                <div class="px-4 py-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+                    <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">{{ __('Payment Details') }}</h2>
                 </div>
 
-                <div class="p-4 space-y-6 flex-1 overflow-y-auto">
+                <div class="px-4 py-3 space-y-4 flex-1 overflow-y-auto">
                     <!-- Customer Section -->
-                    <div class="bg-indigo-50 rounded-lg p-4 border border-indigo-100 relative group">
+                    <div class="bg-indigo-50 rounded-lg p-3 border border-indigo-100 relative group">
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-xs font-bold text-indigo-500 uppercase">{{ __('Customer') }}</span>
                             <button @click="openCustomerModal()" class="text-[10px] font-semibold text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-200 bg-white px-2 py-1 rounded transition-colors flex items-center">
@@ -141,7 +141,7 @@
                             <template x-if="selectedCustomer">
                                 <div class="flex justify-between items-center">
                                     <div>
-                                        <h3 class="font-bold text-lg text-gray-900" x-text="selectedCustomer.name"></h3>
+                                        <h3 class="font-semibold text-base text-gray-900" x-text="selectedCustomer.name"></h3>
                                         <p class="text-sm text-gray-600" x-text="selectedCustomer.phone || i18n.noPhone"></p>
                                     </div>
                                     <button @click="resetCustomer()" class="text-gray-400 hover:text-red-500">
@@ -160,7 +160,7 @@
                     </div>
 
                     <!-- Totals Section -->
-                    <div class="space-y-3">
+                    <div class="space-y-2.5">
                         <div class="flex justify-between items-center text-gray-600 text-sm font-medium">
                             <span>{{ __('Subtotal') }}</span>
                             <span x-text="formatCurrency(subtotal)"></span>
@@ -185,14 +185,14 @@
                             <span>{{ __('Total Discount') }}</span>
                             <span x-text="'- ' + formatCurrency(totalDiscount)"></span>
                         </div>
-                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                            <span class="text-lg font-bold text-gray-800">{{ __('TOTAL') }}</span>
-                            <span class="text-2xl font-extrabold text-blue-600" x-text="formatCurrency(total)"></span>
+                        <div class="flex justify-between items-center pt-3 border-t border-gray-100">
+                            <span class="text-base font-semibold text-gray-800">{{ __('TOTAL') }}</span>
+                            <span class="text-xl font-bold text-blue-600" x-text="formatCurrency(total)"></span>
                         </div>
                     </div>
 
                     <!-- Payment Input -->
-                    <div class="space-y-4 pt-4 border-t border-gray-200">
+                    <div class="space-y-3 pt-3 border-t border-gray-200">
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase mb-2">{{ __('Payment Method') }}</label>
                             <div class="grid grid-cols-2 gap-2">
@@ -224,7 +224,7 @@
                                         type="text"
                                         :value="formatNumber(payment.cash_received)"
                                         @input="payment.cash_received = unformatNumber($event.target.value)"
-                                        class="block w-full py-3 text-lg font-bold text-gray-900 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                        class="block w-full py-2 text-base font-semibold text-gray-900 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                                         :class="window.currencyPosition === 'left' ? 'pl-10 pr-3 text-left' : 'pr-10 pl-3 text-right'"
                                         placeholder="0"
                                     >
@@ -257,10 +257,10 @@
                                         +1K
                                     </button>
                                 </div>
-                                <div class="bg-green-50 p-3 rounded-md border border-green-100 flex justify-between items-center mt-2"
+                                <div class="bg-green-50 px-3 py-2 rounded-md border border-green-100 flex justify-between items-center mt-2"
                                      :class="change < 0 ? 'bg-red-50 border-red-100 text-red-800' : 'bg-green-50 border-green-100 text-green-800'">
-                                    <span class="text-sm font-medium uppercase" x-text="change < 0 ? i18n.due : i18n.change"></span>
-                                    <span class="text-xl font-bold"
+                                    <span class="text-xs font-medium uppercase tracking-wide" x-text="change < 0 ? i18n.due : i18n.change"></span>
+                                    <span class="text-lg font-semibold"
                                           :class="change < 0 ? 'text-red-700' : 'text-green-700'"
                                           x-text="formatCurrency(Math.abs(change))"></span>
                                 </div>
@@ -270,7 +270,7 @@
                         <div>
                             <textarea
                                 x-model="payment.notes"
-                                rows="3"
+                                rows="2"
                                 class="block w-full text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400 py-2"
                                 :placeholder="i18n.transactionNotes"
                             ></textarea>
@@ -279,22 +279,22 @@
                 </div>
 
                 <!-- Footer Actions -->
-                <div class="p-4 border-t border-gray-200 bg-gray-50 flex gap-3">
+                <div class="px-4 py-3 border-t border-gray-200 bg-gray-50 flex gap-2">
                     <button
                         @click="$dispatch('open-modal', { name: 'cancel-modal' })"
-                        class="w-1/3 py-3 text-sm font-bold text-red-600 hover:text-white bg-white border border-red-200 hover:bg-red-600 rounded-lg flex items-center justify-center transition-colors shadow-sm"
+                        class="w-1/3 py-2.5 text-sm font-semibold tracking-wide text-red-600 hover:text-white bg-white border border-red-200 hover:bg-red-600 rounded-lg flex items-center justify-center transition-colors shadow-sm"
                     >
-                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         {{ __('CANCEL') }}
                     </button>
 
                     <button
                         @click="openConfirmation()"
                         :disabled="isSubmitting || cart.length === 0"
-                        class="w-2/3 flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        class="w-2/3 flex justify-center items-center py-2.5 px-3 border border-transparent rounded-lg shadow-sm text-sm font-semibold tracking-wide text-white bg-blue-600 hover:bg-blue-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         <template x-if="isSubmitting">
-                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <svg class="animate-spin mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         </template>
                         <span x-text="isSubmitting ? i18n.processing : i18n.pay"></span>
                     </button>
@@ -862,8 +862,8 @@
                         <span class="font-semibold" x-text="'- ' + formatCurrency(globalDiscount)"></span>
                     </div>
                     <div class="flex items-center justify-between border-t border-gray-100 pt-2 mt-2">
-                        <span class="text-lg font-bold">{{ __('Total Bill') }}</span>
-                        <span class="text-lg font-bold text-blue-600" x-text="formatCurrency(total)"></span>
+                        <span class="text-base font-semibold">{{ __('Total Bill') }}</span>
+                        <span class="text-base font-semibold text-blue-600" x-text="formatCurrency(total)"></span>
                     </div>
 
                     <div class="flex items-center justify-between border-t border-gray-100 pt-2 mt-2" x-show="payment.method === 'cash'">
@@ -904,13 +904,13 @@
                     <button
                         @click="submitSale()"
                         :disabled="isSubmitting"
-                        class="w-full flex justify-center items-center py-3 px-4 rounded-lg shadow-sm text-lg font-bold text-white focus:outline-none disabled:opacity-50 transition-colors"
+                        class="w-full flex justify-center items-center py-2.5 px-4 rounded-lg shadow-sm text-sm font-semibold tracking-wide text-white focus:outline-none disabled:opacity-50 transition-colors"
                         :class="saleStatus === 'completed' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 hover:bg-gray-700'"
                     >
                         <template x-if="isSubmitting">
-                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <svg class="animate-spin mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         </template>
-                        <svg x-show="!isSubmitting" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <svg x-show="!isSubmitting" class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         <span x-text="isSubmitting ? i18n.processing : i18n.processSale"></span>
                     </button>
 
