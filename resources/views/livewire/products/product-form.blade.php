@@ -1,5 +1,21 @@
 <x-modal name="product-form-modal" :title="''" maxWidth="2xl">
-    <div class="p-6">
+    <div class="p-6" x-data="{
+        downloadBarcodeLabel() {
+            const code = (document.getElementById('barcode')?.value || '').trim();
+            const name = (document.getElementById('name')?.value || '').trim();
+            if (!code) {
+                this.$dispatch('toast', { message: @js(__('Enter or generate a barcode first.')), type: 'error' });
+                return;
+            }
+            const params = new URLSearchParams({ code, name });
+            const link = document.createElement('a');
+            link.href = @js(route('products.barcode-label', absolute: false)) + '?' + params.toString();
+            link.download = 'etiqueta-' + code + '.svg';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+    }">
         <!-- Custom Header -->
         <div class="mb-6 space-y-1.5 text-center sm:text-left border-b border-gray-200 pb-4">
             <h3 class="text-lg font-semibold leading-none tracking-tight text-foreground">
@@ -38,14 +54,38 @@
             @endif
 
             <div class="space-y-2">
-                <x-form-input
-                    name="barcode"
-                    :label="__('Barcode (optional)')"
-                    type="text"
-                    wire:model="barcode"
-                    :placeholder="__('Scan or type EAN/UPC — leave empty if unused')"
-                />
-                <p class="text-xs text-muted-foreground">{{ __('If set, you can scan this code in POS to add the product to the cart.') }}</p>
+                <x-input-label for="barcode" :value="__('Barcode (optional)')" />
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <x-text-input
+                        id="barcode"
+                        name="barcode"
+                        type="text"
+                        wire:model="barcode"
+                        class="font-mono"
+                        :placeholder="__('Scan or type EAN/UPC — leave empty if unused')"
+                    />
+                    <div class="flex shrink-0 gap-2">
+                        <button
+                            type="button"
+                            wire:click="generateBarcode"
+                            wire:loading.attr="disabled"
+                            wire:target="generateBarcode"
+                            class="inline-flex h-10 items-center rounded-md bg-[#161513] px-3 text-sm font-medium text-[#f7f3ec] hover:bg-[#2c2926] disabled:opacity-50"
+                        >
+                            <span wire:loading.remove wire:target="generateBarcode">{{ __('Generate') }}</span>
+                            <span wire:loading wire:target="generateBarcode">...</span>
+                        </button>
+                        <button
+                            type="button"
+                            @click="downloadBarcodeLabel()"
+                            class="inline-flex h-10 items-center rounded-md border border-[#161513] bg-white px-3 text-sm font-medium text-[#161513] hover:bg-[#f7f3ec]"
+                        >
+                            {{ __('Download') }}
+                        </button>
+                    </div>
+                </div>
+                <p class="text-xs text-muted-foreground">{{ __('Generate a store barcode and download the label. The company name is printed at the bottom. Save the product before scanning it in the POS.') }}</p>
+                <x-input-error :messages="$errors->get('barcode')" />
             </div>
 
             <!-- Row 2: Category & Unit -->

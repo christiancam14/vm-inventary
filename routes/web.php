@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BarcodeLabelController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\DashboardController;
@@ -25,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('categories', 'categories.index')->name('categories.index');
         Route::view('units', 'units.index')->name('units.index');
         Route::view('products', 'products.index')->name('products.index');
+        Route::get('products/barcode-label', [BarcodeLabelController::class, 'download'])->name('products.barcode-label');
         Route::view('low-stock', 'products.low-in-stock-only')->name('low-stock.index');
         Route::view('movements', 'inventory.index')->name('inventory-movements.index');
     });

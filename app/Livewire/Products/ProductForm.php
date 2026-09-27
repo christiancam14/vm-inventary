@@ -10,6 +10,7 @@ use App\Models\Unit;
 use Livewire\Attributes\On;
 use Illuminate\Validation\Rule;
 use App\Models\Setting;
+use App\Services\BarcodeLabelService;
 use App\Services\ProductService;
 use App\Exceptions\ProductException;
 
@@ -82,6 +83,11 @@ class ProductForm extends Component
         $this->isEditing = true;
 
         $this->dispatch('open-modal', name: 'product-form-modal');
+    }
+
+    public function generateBarcode(BarcodeLabelService $labels): void
+    {
+        $this->barcode = $labels->generateUniqueEan13($this->product?->id);
     }
 
     public function rules()

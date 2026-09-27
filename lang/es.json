@@ -604,5 +604,10 @@
     "Currency position": "Posición de la moneda",
     "Currency fraction digits": "Decimales de la moneda",
     "Thousand separator": "Separador de miles",
-    "Decimal separator": "Separador decimal"
+    "Decimal separator": "Separador decimal",
+    "Generate": "Generar",
+    "Download": "Descargar",
+    "Generate a store barcode and download the label. The company name is printed at the bottom. Save the product before scanning it in the POS.": "Genera un código de la tienda y descarga la etiqueta. El nombre de la empresa queda abajo. Guarda el producto antes de escanearlo en el punto de venta.",
+    "Enter or generate a barcode first.": "Primero escribe o genera un código de barras.",
+    "This barcode cannot be printed.": "Este código de barras no se puede imprimir."
 }

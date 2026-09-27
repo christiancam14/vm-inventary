@@ -29,14 +29,14 @@
                                 @keydown.enter.prevent="scanBarcode()"
                                 :placeholder="i18n.scanBarcode"
                                 autocomplete="off"
-                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm font-mono"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#c4a574] focus:ring-[#c4a574] text-sm font-mono"
                             >
                         </div>
                         <button
                             type="button"
                             @click="scanBarcode()"
                             :disabled="isScanning || !barcodeInput"
-                            class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+                            class="inline-flex items-center px-4 py-2 bg-[#161513] border border-transparent rounded-md font-semibold text-xs text-[#f7f3ec] uppercase tracking-widest hover:bg-[#2c2926] focus:outline-none focus:ring-2 focus:ring-[#c4a574] focus:ring-offset-2 disabled:opacity-50"
                         >
                             <span x-show="!isScanning" x-text="i18n.add"></span>
                             <span x-show="isScanning">...</span>
@@ -61,7 +61,7 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <template x-for="(item, index) in cart" :key="item.id">
-                                    <tr :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'" class="hover:bg-indigo-50 transition-colors">
+                                    <tr :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'" class="hover:bg-[#f7f3ec] transition-colors">
                                         <td class="px-4 py-3 whitespace-nowrap">
                                             <div class="text-sm font-medium text-gray-900" x-text="item.name"></div>
                                             <div class="text-xs text-gray-500" x-text="item.barcode ? (item.sku + ' · ' + item.barcode) : item.sku"></div>
@@ -71,7 +71,7 @@
                                             <div class="flex items-center justify-center">
                                                 <input type="number" x-model="item.quantity" min="1" :max="item.max_stock"
                                                     @input="validateQty(index)"
-                                                    class="w-20 text-center border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-sm shadow-sm"
+                                                    class="w-20 text-center border-gray-300 rounded-md focus:ring-[#c4a574] focus:border-[#c4a574] text-sm shadow-sm"
                                                     placeholder="1">
                                             </div>
                                             <div x-show="item.quantity > item.max_stock" class="text-xs text-red-600 mt-1">
@@ -88,7 +88,7 @@
                                             type="text"
                                             :value="formatNumber(item.discount)"
                                             @input="item.discount = unformatNumber($event.target.value); validateDiscount(index)"
-                                            class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                            class="focus:ring-[#c4a574] focus:border-[#c4a574] block w-full sm:text-sm border-gray-300 rounded-md"
                                             :class="window.currencyPosition === 'left' ? 'pl-8 pr-2 text-right' : 'pr-8 pl-2 text-left'"
                                             placeholder="0"
                                         >
@@ -129,10 +129,10 @@
 
                 <div class="px-4 py-3 space-y-4 flex-1 overflow-y-auto">
                     <!-- Customer Section -->
-                    <div class="bg-indigo-50 rounded-lg p-3 border border-indigo-100 relative group">
+                    <div class="bg-[#f7f3ec] rounded-lg p-3 border border-[#c4a574]/35 relative group">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-bold text-indigo-500 uppercase">{{ __('Customer') }}</span>
-                            <button @click="openCustomerModal()" class="text-[10px] font-semibold text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-200 bg-white px-2 py-1 rounded transition-colors flex items-center">
+                            <span class="text-xs font-bold text-[#8a6840] uppercase">{{ __('Customer') }}</span>
+                            <button @click="openCustomerModal()" class="text-[10px] font-semibold text-[#6b5330] hover:text-[#f7f3ec] hover:bg-[#161513] border border-[#c4a574]/50 bg-white px-2 py-1 rounded transition-colors flex items-center">
                                 + {{ __('New (F4)') }}
                             </button>
                         </div>
@@ -175,7 +175,7 @@
                                     type="text"
                                     :value="formatNumber(globalDiscount)"
                                     @input="globalDiscount = unformatNumber($event.target.value)"
-                                    class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-1"
+                                    class="focus:ring-[#c4a574] focus:border-[#c4a574] block w-full sm:text-sm border-gray-300 rounded-md py-1"
                                     :class="window.currencyPosition === 'left' ? 'pl-8 pr-2 text-right' : 'pr-8 pl-2 text-left'"
                                     placeholder="0"
                                 >
@@ -187,7 +187,7 @@
                         </div>
                         <div class="flex justify-between items-center pt-3 border-t border-gray-100">
                             <span class="text-base font-semibold text-gray-800">{{ __('TOTAL') }}</span>
-                            <span class="text-xl font-bold text-blue-600" x-text="formatCurrency(total)"></span>
+                            <span class="text-xl font-bold text-[#6b5330]" x-text="formatCurrency(total)"></span>
                         </div>
                     </div>
 
@@ -199,14 +199,14 @@
                                 <button
                                     @click="payment.method = 'cash'"
                                     class="px-4 py-2 text-sm font-medium rounded-md border"
-                                    :class="payment.method === 'cash' ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                    :class="payment.method === 'cash' ? 'bg-[#161513] text-[#f7f3ec] border-[#161513] shadow-sm' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                                 >
                                     {{ __('CASH') }}
                                 </button>
                                 <button
                                     @click="payment.method = 'transfer'"
                                     class="px-4 py-2 text-sm font-medium rounded-md border"
-                                    :class="payment.method === 'transfer' ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                    :class="payment.method === 'transfer' ? 'bg-[#161513] text-[#f7f3ec] border-[#161513] shadow-sm' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                                 >
                                     {{ __('TRANSFER') }}
                                 </button>
@@ -224,7 +224,7 @@
                                         type="text"
                                         :value="formatNumber(payment.cash_received)"
                                         @input="payment.cash_received = unformatNumber($event.target.value)"
-                                        class="block w-full py-2 text-base font-semibold text-gray-900 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                        class="block w-full py-2 text-base font-semibold text-gray-900 border-gray-300 rounded-md focus:ring-[#c4a574] focus:border-[#c4a574]"
                                         :class="window.currencyPosition === 'left' ? 'pl-10 pr-3 text-left' : 'pr-10 pl-3 text-right'"
                                         placeholder="0"
                                     >
@@ -271,7 +271,7 @@
                             <textarea
                                 x-model="payment.notes"
                                 rows="2"
-                                class="block w-full text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400 py-2"
+                                class="block w-full text-sm border-gray-300 rounded-md focus:ring-[#c4a574] focus:border-[#c4a574] placeholder-gray-400 py-2"
                                 :placeholder="i18n.transactionNotes"
                             ></textarea>
                         </div>
@@ -291,7 +291,7 @@
                     <button
                         @click="openConfirmation()"
                         :disabled="isSubmitting || cart.length === 0"
-                        class="w-2/3 flex justify-center items-center py-2.5 px-3 border border-transparent rounded-lg shadow-sm text-sm font-semibold tracking-wide text-white bg-blue-600 hover:bg-blue-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        class="w-2/3 flex justify-center items-center py-2.5 px-3 border border-transparent rounded-lg shadow-sm text-sm font-semibold tracking-wide text-[#f7f3ec] bg-[#161513] hover:bg-[#2c2926] focus:outline-none focus:ring-2 focus:ring-[#c4a574] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         <template x-if="isSubmitting">
                             <svg class="animate-spin mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -462,7 +462,7 @@
                                                     <div class="text-xs text-gray-500">${codeLine}</div>
                                                 </div>
                                                 <div class="text-right">
-                                                    <div class="font-bold text-indigo-600">${this.formatCurrency(item.selling_price)}</div>
+                                                    <div class="font-bold text-[#6b5330]">${this.formatCurrency(item.selling_price)}</div>
                                                     <div class="text-xs ${item.quantity > 0 ? 'text-green-600' : 'text-red-600'}">
                                                         ${this.i18n.stock}: ${escape(item.quantity)} ${escape(item.unit?.symbol || '')}
                                                     </div>
@@ -531,7 +531,7 @@
                             render: {
                                 option: (item, escape) => {
                                     return `
-                                        <div class="py-2 px-3 hover:bg-indigo-50">
+                                        <div class="py-2 px-3 hover:bg-[#f7f3ec]">
                                             <div class="font-medium text-gray-900">${escape(item.name)}</div>
                                             <div class="text-xs text-gray-500">${escape(item.phone || this.i18n.noPhone)}</div>
                                         </div>
@@ -863,7 +863,7 @@
                     </div>
                     <div class="flex items-center justify-between border-t border-gray-100 pt-2 mt-2">
                         <span class="text-base font-semibold">{{ __('Total Bill') }}</span>
-                        <span class="text-base font-semibold text-blue-600" x-text="formatCurrency(total)"></span>
+                        <span class="text-base font-semibold text-[#6b5330]" x-text="formatCurrency(total)"></span>
                     </div>
 
                     <div class="flex items-center justify-between border-t border-gray-100 pt-2 mt-2" x-show="payment.method === 'cash'">
@@ -905,7 +905,7 @@
                         @click="submitSale()"
                         :disabled="isSubmitting"
                         class="w-full flex justify-center items-center py-2.5 px-4 rounded-lg shadow-sm text-sm font-semibold tracking-wide text-white focus:outline-none disabled:opacity-50 transition-colors"
-                        :class="saleStatus === 'completed' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 hover:bg-gray-700'"
+                        :class="saleStatus === 'completed' ? 'bg-[#161513] hover:bg-[#2c2926]' : 'bg-gray-600 hover:bg-gray-700'"
                     >
                         <template x-if="isSubmitting">
                             <svg class="animate-spin mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -1033,7 +1033,7 @@
                             id="new_address"
                             x-model="newCust.address"
                             rows="3"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#c4a574] focus:ring-[#c4a574] sm:text-sm"
                             placeholder="{{ __('Full Address') }}"
                         ></textarea>
                         <p x-show="errors.address" x-text="errors.address" class="text-sm font-medium text-red-600 mt-1" style="display: none;"></p>
@@ -1046,7 +1046,7 @@
                             id="new_notes"
                             x-model="newCust.notes"
                             rows="3"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#c4a574] focus:ring-[#c4a574] sm:text-sm"
                             placeholder="{{ __('Additional notes...') }}"
                         ></textarea>
                         <p x-show="errors.notes" x-text="errors.notes" class="text-sm font-medium text-red-600 mt-1" style="display: none;"></p>
