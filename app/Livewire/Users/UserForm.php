@@ -30,17 +30,11 @@ class UserForm extends Component
         ];
     }
 
-    #[On('open-modal')]
-    public function handleOpenModal($name): void
-    {
-        if ($name === 'user-form-modal' && !$this->isEditing) {
-            $this->create(); // Ensure we reset if opening for create
-        }
-    }
-
+    #[On('create-user')]
     public function create(): void
     {
         $this->reset(['user', 'isEditing', 'name', 'username', 'email', 'password', 'password_confirmation']);
+        $this->isEditing = false;
         $this->dispatch('open-modal', name: 'user-form-modal');
     }
 
